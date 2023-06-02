@@ -63,13 +63,13 @@ def bought_food():
         item = input("Item Name: ")
         cost = input("Item Cost: ")
         week = input("Week: ")
-        myfile.write(item + "," + cost + "," + week + "\n")
+        day = input("Day: ")
+        myfile.write(item + "," + cost + "," + week + "," + day + "\n")
     myfile.close()
     
     with open("consumption.csv", "a") as myfile:
         calories = input("Item Calories: ")
-        day = input("Day: ")
-        myfile.write(item + "," + calories + "," + week + "\n")
+        myfile.write(item + "," + cost + "," + week + "," + day + "\n")
     
 if __name__ == "__main__":
     args = sys.argv[1:] # arg[0] is the file name
