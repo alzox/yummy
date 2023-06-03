@@ -37,6 +37,12 @@ def cook_food():
         item_line[3] = str(int(item_line[3]) - 1) # subtract one from the servings
         
         if item_line[3] <= "0":
+            # write line to ate out.csv and remove from current food.csv
+            with open("ate out.csv", "a") as myfile:
+                week = input("Week: ")
+                day = input("Day: ")
+                myfile.write(item_line[0] + "," + item_line[1] + "," + week + "\n")
+            myfile.close()
             lines.pop(int(index))
         else:
             lines[int(index)] = ",".join(item_line) # join the list back into a string
@@ -64,12 +70,12 @@ def bought_food():
         cost = input("Item Cost: ")
         week = input("Week: ")
         day = input("Day: ")
-        myfile.write(item + "," + cost + "," + week + "," + day + "\n")
+        myfile.write(item + "," + cost + "," + week + "," + "\n")
     myfile.close()
     
     with open("consumption.csv", "a") as myfile:
         calories = input("Item Calories: ")
-        myfile.write(item + "," + cost + "," + week + "," + day + "\n")
+        myfile.write(item + "," + calories + "," + week + "," + day + "\n")
     
 if __name__ == "__main__":
     args = sys.argv[1:] # arg[0] is the file name
