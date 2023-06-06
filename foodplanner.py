@@ -39,9 +39,7 @@ def cook_food():
         if item_line[3] <= "0":
             # write line to ate out.csv and remove from current food.csv
             with open("ate out.csv", "a") as myfile:
-                week = input("Week: ")
-                day = input("Day: ")
-                myfile.write(item_line[0] + "," + item_line[1] + "," + week + "\n")
+                myfile.write("Finished" + "," + item_line[1] + "," + item_line[4] + "\n")
             myfile.close()
             lines.pop(int(index))
         else:
@@ -70,7 +68,7 @@ def bought_food():
         cost = input("Item Cost: ")
         week = input("Week: ")
         day = input("Day: ")
-        myfile.write(item + "," + cost + "," + week + "," + "\n")
+        myfile.write(item + "," + cost + "," + week + "\n")
     myfile.close()
     
     with open("consumption.csv", "a") as myfile:
