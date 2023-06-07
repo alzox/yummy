@@ -2,12 +2,12 @@
 import sys
 
 def add_food():
+    week = input("Week: ")
     with open("current food.csv", "a") as myfile:
         item = input("Item Name: ")
         cost = input("Item Cost: ")
         calories = input("Item Calories per Serving: ")
         servings = input("Item Servings: ")
-        week = input("Week: ")
         cost_per_serving = float(cost) / float(servings)
         myfile.write(item + "," + cost + "," + calories + "," + servings + "," + week + "," + str(cost_per_serving) + "\n")
         
@@ -77,8 +77,8 @@ def bought_food():
     
 if __name__ == "__main__":
     args = sys.argv[1:] # arg[0] is the file name
-    # args[0] is the first (1) argument  | add or remove or cook
-    # args[1] is the second (2) argument | amount to add or remove
+    # args[0] is the first (1) argument  | add or remove or cook or buy
+    # args[1] is the second (2) argument | amount
     if args[0] == "add":
         for i in range(int(args[1])):
             add_food()
