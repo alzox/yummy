@@ -34,8 +34,11 @@ def cook_food():
         
         # split the line into a list
         item_line = lines[int(index)].split(",")
-        item_line[3] = str(int(item_line[3]) - 1) # subtract one from the servings
         
+        item_line[3] = str(int(item_line[3]) - 1) # subtract one from the servings
+        # add the cost and calories to the total
+        item_cost = float(lines[int(index)].split(",")[5])
+        item_calories = float(lines[int(index)].split(",")[2])
         if item_line[3] <= "0":
             # write line to ate out.csv and remove from current food.csv
             with open("ate out.csv", "a") as myfile:
@@ -45,9 +48,7 @@ def cook_food():
         else:
             lines[int(index)] = ",".join(item_line) # join the list back into a string
 
-        # add the cost and calories to the total
-        item_cost = float(lines[int(index)].split(",")[5])
-        item_calories = float(lines[int(index)].split(",")[2])
+
     myfile.close()
     
     # open the file again to write the new values

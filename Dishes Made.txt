@@ -1,0 +1,21 @@
+Dishes Made:
+Spring Rolls
+Sandwiches
+Tomato and Eggs
+Pizza
+Hamburger
+Hot Dog
+
+Failed:
+Fried Rice
+Beef Broil
+
+To Do:
+Ramen
+Pho
+Vegetable Omelettes
+Garlic Bread
+Sushi
+Dumplings
+Chinese Cabbage Stew
+Braised Pork
