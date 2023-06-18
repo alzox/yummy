@@ -1,15 +1,17 @@
 # import command line arguments
 import sys
 
-def add_food():
+def add_food(amount):
     week = input("Week: ")
+    
     with open("current food.csv", "a") as myfile:
-        item = input("Item Name: ")
-        cost = input("Item Cost: ")
-        calories = input("Item Calories per Serving: ")
-        servings = input("Item Servings: ")
-        cost_per_serving = float(cost) / float(servings)
-        myfile.write(item + "," + cost + "," + calories + "," + servings + "," + week + "," + str(cost_per_serving) + "\n")
+        for i in range(int(amount)):
+            item = input("Item Name: ")
+            cost = input("Item Cost: ")
+            calories = input("Item Calories per Serving: ")
+            servings = input("Item Servings: ")
+            cost_per_serving = float(cost) / float(servings)
+            myfile.write(item + "," + cost + "," + calories + "," + servings + "," + week + "," + str(cost_per_serving) + "\n")
         
 def remove_food():
     with open("current food.csv", "r") as myfile:
@@ -81,8 +83,7 @@ if __name__ == "__main__":
     # args[0] is the first (1) argument  | add or remove or cook or buy
     # args[1] is the second (2) argument | amount
     if args[0] == "add":
-        for i in range(int(args[1])):
-            add_food()
+        add_food(args[1])
     if args[0] == "remove":
         for i in range(int(args[1])):
             remove_food()

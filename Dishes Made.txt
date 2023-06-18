@@ -1,21 +1,31 @@
+
 Dishes Made:
-Spring Rolls
-Sandwiches
-Tomato and Eggs
-Pizza
-Hamburger
-Hot Dog
+ Spring Rolls
+ Deli Sandwiches
+
+ Cost Efficient:
+    Tomato and Eggs
+    Pizza
+    Hamburger
+    Hot Dog
+    Sushi
 
 Failed:
-Fried Rice
-Beef Broil
+ Fried Rice
+ Beef Broil
 
 To Do:
-Ramen
-Pho
-Vegetable Omelettes
-Garlic Bread
-Sushi
-Dumplings
-Chinese Cabbage Stew
-Braised Pork
+ Ramen
+ Pho
+ 
+  Cost Efficient:
+   Chinese Cabbage Stew
+   Mapo Tofu
+   Garlic Bread
+   Dumplings
+   Tacos
+   Braised Pork
+   Vegetable Omelettes
+
+
+

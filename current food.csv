@@ -1,19 +1,27 @@
 item, cost, calories per serving, servings left, week, cost per serving
-Hot Dogs,6.99,170,9,1,0.436875
-Hot Dog Buns,2.50,140,3,1,0.3125
+Hot Dogs,6.99,170,7,1,0.436875
+Hot Dog Buns,2.50,140,2,1,0.3125
 Butter,4,100,32,1,0.125
 Condiments,10,1,1,1,10.0
-Rice,6,160,48,1,0.12
+Rice,6,160,47,1,0.12
 Pringles,4,150,4,2,0.3333333333333333
-Condiments,10,1,1,2,10.0
-Marco & Lucas,30,500,10,3,3.0
+Condiments,10,90,9,2,0.1
+Marco & Lucas,30,500,10,4,3.0
 Mango,3,200,1,3,1.0
-Eggs,2,100,10,3,0.16666666666666666
-Brioche Slices,5,110,9,3,0.3333333333333333
-Caprisun,8,100,18,3,0.4
-Honey Ham,10,70,5,3,1.25
-Salami,7,100,1,3,1.75
+Eggs,2,100,5,3,0.16666666666666666
+Brioche Slices,5,110,3,3,0.3333333333333333
+Caprisun,8,100,17,3,0.4
+Honey Ham,10,70,3,3,1.25
 Arizona,6,100,9,3,0.5
-Beef Yakisoba,3,500,3,3,1.0
-Rice Paper,4,50,16,3,0.2
-Condiments,1,1,1,3,1.0
+Beef Yakisoba,3,500,2,3,1.0
+Rice Paper,4,50,8,3,0.2
+Potatoes,5.99,160,11,4,0.5445454545454546
+P.F Changs Dumplings,10,840,2,4,5.0
+Mangos,3,200,3,4,1.0
+Eggs,2,100,12,4,0.16666666666666666
+Flour Tortillas,2,100,20,4,0.1
+Ground Beef,16,170,8,4,2.0
+Beef,16,170,8,4,2.0
+Tofu,4,130,5,4,0.8
+Pho Noodles,5,220,4,4,1.25
+Baguette,3,150,4,4,0.75
