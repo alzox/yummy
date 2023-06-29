@@ -9,21 +9,17 @@ Dishes Made:
     Hamburger
     Hot Dog
     Sushi
-
-Failed:
- Fried Rice
- Beef Broil
+    Curry
+    Dumplings
+    Tacos
+    Pho
+    Ramen
 
 To Do:
- Ramen
- Pho
  
   Cost Efficient:
    Chinese Cabbage Stew
    Mapo Tofu
-   Garlic Bread
-   Dumplings
-   Tacos
    Braised Pork
    Vegetable Omelettes
 
