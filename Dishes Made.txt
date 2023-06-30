@@ -4,15 +4,15 @@ Dishes Made:
  Deli Sandwiches
 
  Cost Efficient:
-    Tomato and Eggs
-    Pizza
-    Hamburger
-    Hot Dog
-    Sushi
     Curry
-    Dumplings
     Tacos
     Pho
+    Dumplings
+    Sushi
+    Hot Dog
+    Tomato and Eggs
+    Hamburger
+    Pizza
     Ramen
 
 To Do:

@@ -58,7 +58,6 @@ Discount,-40,4
 Poke,10,4
 Steak and Eggs,0.1,4
 Hamburger,.1,4
-Garlic Sub,10,4
 Mango Freeze,10,4
 Garlic Sub,10,5
 Tacos,0.1,5
@@ -73,3 +72,5 @@ Finished,4,4
 Finished,16,4
 KFT,5,5
 bagel w/ cheese,.01,5
+MISC,5,6
+Brioche Slices,5,3
