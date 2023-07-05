@@ -9,19 +9,22 @@ Dishes Made:
     Pho
     Dumplings
     Sushi
+    Ramen
+    Chicken Sandwich
     Hot Dog
     Tomato and Eggs
     Hamburger
     Pizza
-    Ramen
+    Chinese Cabbage Stew
 
 To Do:
  
   Cost Efficient:
-   Chinese Cabbage Stew
    Mapo Tofu
    Braised Pork
    Vegetable Omelettes
+   Hashbrowns
+   Bahn Mi
 
 
 
