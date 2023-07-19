@@ -11,6 +11,7 @@ Dishes Made:
     Sushi
     Ramen
     Chicken Sandwich
+    Peanut Noodles
     Omlette
     Hot Dog
     Tomato and Eggs
