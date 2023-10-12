@@ -2,30 +2,43 @@
 Dishes Made:
  Spring Rolls
  Deli Sandwiches
+ Fried Fish
+ Steak/Beef
+ Cheesesteak
+ Poke
 
- Cost Efficient:
-    Curry
-    Tacos
-    Pho
-    Dumplings
-    Sushi
-    Ramen
-    Chicken Sandwich
-    Peanut Noodles
-    Omlette
-    Hot Dog
-    Tomato and Eggs
-    Hamburger
-    Pizza
-    Chinese Cabbage Stew
+ Cost Efficient (By Cost):
+    Tomato and Eggs ($.5)
+    Chinese Cabbage Stew ($.5)
+    Omlette ($.5)
+    Hot Dog ($.5)
+    Mac & Cheese ($1)
+    Pho ($1)
+    Peanut Noodles ($1)
+    Curry ($1.5)
+    Ramen ($1.5)
+    Hamburger ($2)
+    Chicken Sandwich ($2)
+    Tacos ($2)
+    Dumplings ($2)
+    Sushi ($2)
+    Pizza ($2)
+    
 
 To Do:
- 
-  Cost Efficient:
    Mapo Tofu
    Braised Pork
    Hashbrowns
    Bahn Mi
+   Beef Teriyaki
+   French Fries
+   Pasta
+   Meatballs
+   Chicken Shwarma
+   Bibimbop
+
+   
+   
 
 
 
