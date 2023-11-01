@@ -13,6 +13,8 @@ Dishes Made:
     Omlette ($.5)
     Hot Dog ($.5)
     Mac & Cheese ($1)
+    Pasta ($1)
+    Hashbrowns ($1)
     Pho ($1)
     Peanut Noodles ($1)
     Curry ($1.5)
@@ -23,19 +25,18 @@ Dishes Made:
     Dumplings ($2)
     Sushi ($2)
     Pizza ($2)
+    Bibimbop ($2)
     
 
 To Do:
    Mapo Tofu
    Braised Pork
-   Hashbrowns
    Bahn Mi
    Beef Teriyaki
    French Fries
-   Pasta
    Meatballs
    Chicken Shwarma
-   Bibimbop
+   
 
    
    
