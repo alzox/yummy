@@ -16,10 +16,12 @@ Dishes Made:
     Pasta ($1)
     Hashbrowns ($1)
     Pho ($1)
+    French Fries ($1)
     Peanut Noodles ($1)
     Curry ($1.5)
     Ramen ($1.5)
     Hamburger ($2)
+    Meatballs ($2)
     Chicken Sandwich ($2)
     Tacos ($2)
     Dumplings ($2)
@@ -33,8 +35,8 @@ To Do:
    Braised Pork
    Bahn Mi
    Beef Teriyaki
-   French Fries
-   Meatballs
+   
+   
    Chicken Shwarma
    
 
