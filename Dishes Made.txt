@@ -1,44 +1,56 @@
+With Rice:
+Tomato and Eggs
+Cabbage Stew
+Curry
+Steak
+Fried Protein
+Teriyaki
+Bibimbop
+Sushi
+Poke
 
-Dishes Made:
- Spring Rolls
- Deli Sandwiches
- Fried Fish
- Steak/Beef
- Cheesesteak
- Poke
+With Noodles:
+Mac & Cheese
+Pasta
+Yakisoba
+Pho
+Ramen
+Peanut Noodles  
 
- Cost Efficient (By Cost):
-    Tomato and Eggs ($.5)
-    Chinese Cabbage Stew ($.5)
-    Omlette ($.5)
-    Hot Dog ($.5)
-    Mac & Cheese ($1)
-    Pasta ($1)
-    Hashbrowns ($1)
-    Pho ($1)
-    French Fries ($1)
-    Peanut Noodles ($1)
-    Curry ($1.5)
-    Ramen ($1.5)
-    Hamburger ($2)
-    Meatballs ($2)
-    Chicken Sandwich ($2)
-    Tacos ($2)
-    Dumplings ($2)
-    Sushi ($2)
-    Pizza ($2)
-    Bibimbop ($2)
-    
+With Bun:
+Deli Sandwiches
+Cheesesteak
+Hamburger
+Fried Protein Sandwich
+
+Appetizers:
+Chips
+Omelet
+Waffles
+Tteokbokki
+Bao Buns
+Nuggets
+Hashbrowns
+French Fries 
+Meatballs
+Tacos
+Dumplings
+Mashed Potatoes
+Spring Rolls
+Pizza
+Fried Fish
+
 
 To Do:
    Mapo Tofu
    Braised Pork
-   Bahn Mi
-   Beef Teriyaki
-   
-   
-   Chicken Shwarma
-   
+   Protein Shwarma
+   Protein Wrap
+   Protein Gyro
+   Ciabatta
+   Butter Chicken
+   Scallion Pancakes
+   Calamari
 
    
    
