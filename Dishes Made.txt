@@ -1,13 +1,22 @@
 With Rice:
-Tomato and Eggs
-Cabbage Stew
+Stew
+Soup
 Curry
 Steak
+Chicken
+Pork
+Tofu
+Fish
+Vegetables
 Fried Protein
-Teriyaki
-Bibimbop
+Tomato and Eggs
+
 Sushi
+Onigiri
 Poke
+Bibimbop
+Texmex Bowl
+Mediterranean Bowl
 
 With Noodles:
 Mac & Cheese
@@ -21,37 +30,26 @@ With Bun:
 Deli Sandwiches
 Cheesesteak
 Hamburger
+Gyros
+Tacos
 Fried Protein Sandwich
 
-Appetizers:
-Chips
+Individual Grab-bag:
 Omelet
 Waffles
 Tteokbokki
 Bao Buns
+Mashed Potatoes
+Scallion Pancakes
+
+Frozen:
 Nuggets
 Hashbrowns
 French Fries 
-Meatballs
-Tacos
 Dumplings
-Mashed Potatoes
 Spring Rolls
+Fried Shrimp
 Pizza
-Fried Fish
-
-
-To Do:
-   Mapo Tofu
-   Braised Pork
-   Protein Shwarma
-   Protein Wrap
-   Protein Gyro
-   Ciabatta
-   Butter Chicken
-   Scallion Pancakes
-   Calamari
-   Risotto
    
    
 
