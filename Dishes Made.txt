@@ -3,6 +3,7 @@ Stew
 Soup
 Curry
 Steak
+Beef
 Chicken
 Pork
 Tofu
@@ -33,6 +34,7 @@ Hamburger
 Gyros
 Tacos
 Fried Protein Sandwich
+Protein Sandwich
 
 Individual Grab-bag:
 Omelet
