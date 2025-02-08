@@ -67,7 +67,7 @@ class TurtleShell(cmd.Cmd):
 
 def parse(arg):
     'Convert a series of zero or more numbers to an argument tuple'
-    return tuple(map(int, arg.split()))
+    return tuple(map(str, arg.split()))
 
 if __name__ == '__main__':
     TurtleShell().cmdloop()
