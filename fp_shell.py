@@ -7,9 +7,23 @@ class FPShell(cmd.Cmd):
     file = None
     
     "-- basic food planning commands --"
-    def do_add(self, arg):
-        'Add a food item to the list:  ADD "Spaghetti"'
-        add(*parse(arg))
+    def do_plan(self, arg):
+        'Plan a day:  PLAN day_of_week'
+        plan(*parse(arg))
+        
+    weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        
+    def complete_plan(self, text, line, begidx, endidx):
+        if text:
+            return [weekday for weekday in self.weekdays if weekday.startswith(text)]
+        else:
+            return self.weekdays
+        
+        
+    def do_exit(self, arg):
+        'Exit the shell:  EXIT'
+        print('Thank you for using the food planner')
+        return True
 
 def parse(arg):
     'Convert a series of zero or more strings to an argument tuple'
