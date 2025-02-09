@@ -3,7 +3,7 @@
 import sqlite3
 import os
 
-directory = "/mnt/c/Users/commo/.planner"
+directory = "food.db"
 file = os.path.join(directory, "food.db")
 
 if not os.path.exists(directory):

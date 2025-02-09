@@ -1,5 +1,5 @@
 import sqlite3
-file = "C:/Users/commo/.planner/food.db"
+file = r"C:\Users\commo\OneDrive - University of Virginia\School\STEM\CS\Coding Projects 2025\Food-Planner\food.db"
 
 """Clear Functions"""
 

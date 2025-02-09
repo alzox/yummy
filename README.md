@@ -11,3 +11,5 @@ keyboard
 * YOU NEED TO REFACTOR
 * more stylistic prints
 * review ui flow
+* review set-up and run scripts
+* review db location?
