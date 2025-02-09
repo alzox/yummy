@@ -1,6 +1,7 @@
 import keyboard
 import msvcrt
 
+
 def plan(weekday):
     'Plan a day:  PLAN day_of_week'
     weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']

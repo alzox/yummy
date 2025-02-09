@@ -29,9 +29,16 @@ def insert_plan(weekday_id, breakfast_id, lunch_id, dinner_id):
 def insert_meal(meal):
     conn = sqlite3.connect(file)
     c = conn.cursor()
-    c.execute("INSERT INTO Meals (meal_name) VALUES (?)", (meal,))
-    conn.commit()
-    conn.close()
+    try:
+        c.execute("INSERT INTO Meals (meal_name) VALUES (?)", (meal,))
+        conn.commit()
+    except sqlite3.IntegrityError as e:
+        if 'UNIQUE constraint failed' in str(e):
+            print(f"Error: The meal '{meal}' already exists.")
+        else:
+            raise
+    finally:
+        conn.close()
     
 """Find Functions"""
 
