@@ -87,6 +87,17 @@ def find_plan(weekday_id):
     conn.close()
     return plan
 
+""" Aggregate Functions """
+
+def export_plans():
+    conn = sqlite3.connect(file)
+    c = conn.cursor()
+    # Left Join to get the meal names for all breakfast, lunch, dinner ids and Left Join weekday_id to get the weekday name
+    c.execute("SELECT Weekdays.weekday_name, Meals.meal_name, Meals2.meal_name, Meals3.meal_name FROM Plans LEFT JOIN Meals ON Plans.breakfast_id = Meals.meal_id LEFT JOIN Meals Meals2 ON Plans.lunch_id = Meals2.meal_id LEFT JOIN Meals Meals3 ON Plans.dinner_id = Meals3.meal_id LEFT JOIN Weekdays ON Plans.weekday_id = Weekdays.weekday_id")
+    plans = c.fetchall()
+    conn.close()
+    return plans
+
 if __name__ == "__main__":
     clear_plans()
     clear_meals()

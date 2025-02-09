@@ -1,4 +1,4 @@
-import keyboard
+import json
 import msvcrt
 import fp_db as db
 
@@ -70,7 +70,22 @@ def show(weekday='all'):
             print('Breakfast: ' + db.find_meal(plan[2]))
             print('Lunch: ' + db.find_meal(plan[3]))
             print('Dinner: ' + db.find_meal(plan[4]))
-            
+    
+def clear():
+    'Clear all plans'
+    db.clear_plans()
+    print('All plans cleared')
+    
+def plan_to_json():
+    'Export plans to JSON'
+    print('Exporting plans to JSON')
+    plans = db.export_plans()
+    # Serialize tuple (weekday, breakfast, lunch, dinner) to JSON
+    plans_dict = [{'weekday': plan[0], 'breakfast': plan[1], 'lunch': plan[2], 'dinner': plan[3]} for plan in plans]
+    with open('docs/plans.json', 'w') as f:
+        json.dump(plans_dict, f)
+    print('Plans exported to docs/plans.json')
+    
 """Helper Functions"""
 def suggest():
     #!STUBBED
@@ -117,5 +132,4 @@ def select():
         
     
 if __name__ == '__main__':
-    "Short tests"
-    plan('Monday')
+    plan_to_json()

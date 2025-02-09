@@ -23,6 +23,12 @@ class FPShell(cmd.Cmd):
         'Show the current plan:  SHOW'
         show(*parse(arg))
         
+    def complete_show(self, text, line, begidx, endidx):
+        if text:
+            return [weekday for weekday in self.weekdays + ["all"] if weekday.startswith(text)]
+        else:
+            return self.weekdays[:] + ["all"]
+        
     def do_exit(self, arg):
         'Exit the shell:  EXIT'
         print('Thank you for using the food planner')
