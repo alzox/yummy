@@ -7,8 +7,7 @@ pyreadline3
 keyboard
 
 ## To-do
+* add grocery util
 * YOU NEED TO REFACTOR
 * more stylistic prints
 * review ui flow
-* refactor fp_funcs
-* add more utilities
