@@ -138,6 +138,33 @@ def show(weekday='all'):
         else:
             print_plan(weekday, plan)
     
+    
+def grocery():
+    "Add ingredients to grocery list:  GROCERY"
+    print('Adding ingredients to grocery list')
+    GROCERY_PATH = r"C:\Users\commo\OneDrive - University of Virginia\School\STEM\CS\Coding Projects 2025\Food-Planner\docs\grocery.csv"
+    setup_grocery()
+    while True:
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print_grocery()
+        ingredient = input('Enter ingredient: ').title()
+        if ingredient == 'exit':
+            break
+        quantity = input('Enter quantity: ')
+        if quantity == 'exit':
+            break
+        with open(GROCERY_PATH, 'a') as f:
+            f.write(f'{ingredient},{quantity}\n')
+            f.close()
+        
+def setup_grocery():
+    'Setup grocery list:  SETUP_GROCERY'
+    GROCERY_PATH = r"C:\Users\commo\OneDrive - University of Virginia\School\STEM\CS\Coding Projects 2025\Food-Planner\docs\grocery.csv"
+    with open(GROCERY_PATH, 'w') as f:
+        print('Grocery list setup')
+        f.close()
+    return
+    
 def clear():
     'Clear all plans'
     db.clear_plans()
@@ -198,6 +225,17 @@ def select():
     return None
 
 """Helper Print Functions"""
+def print_grocery():
+    GROCERY_PATH = r"C:\Users\commo\OneDrive - University of Virginia\School\STEM\CS\Coding Projects 2025\Food-Planner\docs\grocery.csv"
+    print('=' * 20)
+    print('Grocery List')
+    with open(GROCERY_PATH, 'r') as f:
+        for line in f.readlines():
+            data = line.strip().split(',')
+            print(f'{data[1]}x: {data[0]}')
+    print('=' * 20)
+    print('Type "exit" to exit')
+
 def print_plan_option():
     print('=' * 20)
     print('"suggest" for recipe suggestions')
@@ -240,4 +278,4 @@ def print_page(page, data):
     print('n: next page | p: previous page | q: quit')
        
 if __name__ == '__main__':
-    edit("Monday")
+    grocery()

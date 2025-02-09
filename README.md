@@ -7,7 +7,6 @@ pyreadline3
 keyboard
 
 ## To-do
-* add grocery util
 * YOU NEED TO REFACTOR
 * REMOVE HARDCODED FILE LOCS TO CONFIG
 * more stylistic prints
