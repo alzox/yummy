@@ -19,6 +19,9 @@ class FPShell(cmd.Cmd):
         else:
             return self.weekdays[:]
         
+    def do_show(self, arg):
+        'Show the current plan:  SHOW'
+        show()
         
     def do_exit(self, arg):
         'Exit the shell:  EXIT'

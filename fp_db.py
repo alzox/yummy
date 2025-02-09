@@ -72,6 +72,14 @@ def find_mealid(meal):
     conn.close()
     return meal_id
 
+def find_meal(meal_id):
+    conn = sqlite3.connect(file)
+    c = conn.cursor()
+    c.execute("SELECT meal_name FROM Meals WHERE meal_id=?", (meal_id,))
+    meal = c.fetchone()[MEALNAME_INDEX]
+    conn.close()
+    return meal
+
 def find_plan(weekday_id):
     conn = sqlite3.connect(file)
     c = conn.cursor()
