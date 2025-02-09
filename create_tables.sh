@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS Weekdays (
 cur.execute('''
 CREATE TABLE IF NOT EXISTS Meals (
     meal_id INTEGER PRIMARY KEY,
-    meal_name TEXT NOT NULL
+    meal_name TEXT NOT NULL UNIQUE
 )
 ''')
 
