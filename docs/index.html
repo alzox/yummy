@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Food Planner - Plan your meals efficiently">
+    <meta name="author" content="Your Name">
+
+    <title>Food Planner</title>
+    
+</head>
+<body>
+    <header>
+        <h1>Food Planner</h1>
+    </header>
+    <section>
+        <div id="list">
+            <div id="monday" class="weekday">
+                <h2>Monday</h2>
+            </div>
+            <div id="tuesday" class="weekday">
+                <h2>Tuesday</h2>
+            </div>  
+            <div id="wednesday" class="weekday">
+                <h2>Wednesday</h2>
+            </div>
+            <div id="thursday" class="weekday">
+                <h2>Thursday</h2>
+            </div>
+            <div id="friday" class="weekday">
+                <h2>Friday</h2>
+            </div>  
+            <div id="saturday" class="weekday">
+                <h2>Saturday</h2>
+            </div>
+            <div id="sunday" class="weekday">
+                <h2>Sunday</h2>
+            </div>
+        </div>
+    </section>
+</body>
+
+<script>
+    /* retrieve data from plans.json */
+    fetch('plans.json')
+    .then(response => response.json())
+    .then(data => {
+        let days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+        let meals = ['breakfast', 'lunch', 'dinner'];
+        data.forEach(dayPlan => {
+            let day = dayPlan.weekday.toLowerCase();
+            if (days.includes(day)) {
+                let weekday = document.getElementById(day);
+                meals.forEach(meal => {
+                    let mealDiv = document.createElement('div');
+                    mealDiv.innerHTML = dayPlan[meal];
+                    console.log(mealDiv);
+                    weekday.appendChild(mealDiv);
+                });
+            }
+        });
+    });
+</script>
+</html>
