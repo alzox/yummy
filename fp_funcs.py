@@ -1,6 +1,6 @@
 import keyboard
 import msvcrt
-
+import fp_db as db
 
 def plan(weekday):
     'Plan a day:  PLAN day_of_week'
@@ -26,6 +26,7 @@ def plan(weekday):
                     key = msvcrt.getch().decode('utf-8').lower()
                     if key == 'y':
                         meal_arr.append(meal)
+                        db.insert_meal(meal)
                         index += 1
                         break
                     elif key == 'n':
@@ -37,11 +38,13 @@ def plan(weekday):
     print('Breakfast: ' + meal_arr[0])
     print('Lunch: ' + meal_arr[1])
     print('Dinner: ' + meal_arr[2])
+    db.insert_plan(weekdays_lower.index(weekday_lower) + 1, db.find_mealid(meal_arr[0]), db.find_mealid(meal_arr[1]), db.find_mealid(meal_arr[2]))
     
     
     
 '''helper function'''
 def suggest():
+    #!STUBBED
     'Suggest 5 random recipes'
     print('Suggesting 5 random recipes')
     print('Recipe 1: Chicken Alfredo')

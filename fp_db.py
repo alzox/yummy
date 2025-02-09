@@ -22,7 +22,18 @@ def clear_meals():
 def insert_plan(weekday_id, breakfast_id, lunch_id, dinner_id):
     conn = sqlite3.connect(file)
     c = conn.cursor()
-    c.execute("INSERT INTO Plans (weekday_id, breakfast_id, lunch_id, dinner_id) VALUES (?, ?, ?, ?)", (weekday_id, breakfast_id, lunch_id, dinner_id))
+    
+    if find_plan(weekday_id) is not None:
+        update_plan(weekday_id, breakfast_id, lunch_id, dinner_id)
+    else:
+        c.execute("INSERT INTO Plans (weekday_id, breakfast_id, lunch_id, dinner_id) VALUES (?, ?, ?, ?)", (weekday_id, breakfast_id, lunch_id, dinner_id))
+    conn.commit()
+    conn.close()
+    
+def update_plan(weekday_id, breakfast_id, lunch_id, dinner_id):
+    conn = sqlite3.connect(file)
+    c = conn.cursor()
+    c.execute("UPDATE Plans SET breakfast_id=?, lunch_id=?, dinner_id=? WHERE weekday_id=?", (breakfast_id, lunch_id, dinner_id, weekday_id))
     conn.commit()
     conn.close()
     
@@ -52,6 +63,14 @@ def find_mealid(meal):
     meal_id = c.fetchone()[MEALID_INDEX]
     conn.close()
     return meal_id
+
+def find_plan(weekday_id):
+    conn = sqlite3.connect(file)
+    c = conn.cursor()
+    c.execute("SELECT * FROM Plans WHERE weekday_id=?", (weekday_id,))
+    plan = c.fetchone()
+    conn.close()
+    return plan
 
 if __name__ == "__main__":
     clear_plans()
