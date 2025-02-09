@@ -145,11 +145,12 @@ def clear():
     
 def plan_to_json():
     'Export plans to JSON'
+    JSON_PATH = r"C:\Users\commo\OneDrive - University of Virginia\School\STEM\CS\Coding Projects 2025\Food-Planner\docs\plans.json"
     print('Exporting plans to JSON')
     plans = db.export_plans()
     # Serialize tuple (weekday, breakfast, lunch, dinner) to JSON
     plans_dict = [{'weekday': plan[0], 'breakfast': plan[1], 'lunch': plan[2], 'dinner': plan[3]} for plan in plans]
-    with open('docs/plans.json', 'w') as f:
+    with open(JSON_PATH, 'w') as f:
         json.dump(plans_dict, f)
     print('Plans exported to docs/plans.json')
     

@@ -9,6 +9,7 @@ keyboard
 ## To-do
 * add grocery util
 * YOU NEED TO REFACTOR
+* REMOVE HARDCODED FILE LOCS TO CONFIG
 * more stylistic prints
 * review ui flow
 * review set-up and run scripts
