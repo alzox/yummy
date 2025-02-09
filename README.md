@@ -13,3 +13,4 @@ keyboard
 * review ui flow
 * review set-up and run scripts
 * review db location?
+* review directory structure for scripts and resources
