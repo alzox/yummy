@@ -121,7 +121,6 @@ def edit(weekday):
                 
 def show(weekday='all'):
     'Show the current plan:  SHOW'
-    print_plan(weekday, plan)
     
     weekday_lower = weekday.lower()
     if weekday_lower not in weekdays_lower and not weekday_lower == 'all':

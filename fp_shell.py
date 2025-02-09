@@ -3,6 +3,7 @@ from fp_funcs import *
 
 class FPShell(cmd.Cmd):
     intro = 'Welcome to the food planning shell.   Type help or ? to list commands.\n'
+    
     prompt = '(planner) '
     file = None
     

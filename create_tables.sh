@@ -1,19 +1,21 @@
-#!/bin/python3
+#!/usr/bin/env python3
 
 import sqlite3
 import os
 
-file = "food.db"
+directory = "/mnt/c/Users/commo/.planner"
+file = os.path.join(directory, "food.db")
+
+if not os.path.exists(directory):
+    os.makedirs(directory)
 
 if os.path.exists(file):
     os.remove(file)
     with open(file, 'w') as f:
         pass
-    f.close()
 else:
     with open(file, 'w') as f:
         pass
-    f.close()
 
 conn = sqlite3.connect(file)
 cur = conn.cursor()
