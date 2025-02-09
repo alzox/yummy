@@ -1,8 +1,19 @@
 #!/bin/python3
 
 import sqlite3
+import os
 
 file = "food.db"
+
+if os.path.exists(file):
+    os.remove(file)
+    with open(file, 'w') as f:
+        pass
+    f.close()
+else:
+    with open(file, 'w') as f:
+        pass
+    f.close()
 
 conn = sqlite3.connect(file)
 cur = conn.cursor()
@@ -19,8 +30,7 @@ CREATE TABLE IF NOT EXISTS Weekdays (
 cur.execute('''
 CREATE TABLE IF NOT EXISTS Meals (
     meal_id INTEGER PRIMARY KEY,
-    meal_name TEXT NOT NULL,
-    meal_type TEXT NOT NULL
+    meal_name TEXT NOT NULL
 )
 ''')
 
