@@ -10,6 +10,7 @@ class FPShell(cmd.Cmd):
     def do_plan(self, arg):
         'Plan a day:  PLAN day_of_week'
         plan(*parse(arg))
+        self.do_export()
         
     weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
             
@@ -32,6 +33,10 @@ class FPShell(cmd.Cmd):
     def do_export(self, arg):
         'Export the current plan:  EXPORT'
         plan_to_json()
+        
+    def do_reset(self, arg):
+        'Reset all of the plans: RESET'
+        clear()
         
     def do_clear(self, arg):
         'Clear shell screen:  CLEAR'

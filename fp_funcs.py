@@ -3,10 +3,12 @@ import os
 import msvcrt
 import fp_db as db
 
+weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+weekdays_lower = [day.lower() for day in weekdays]
+
 def plan(weekday):
     'Plan a day:  PLAN day_of_week'
-    weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    weekdays_lower = [day.lower() for day in weekdays]
+    
     weekday_lower = weekday.lower()
     if weekday_lower not in weekdays_lower:
         print('Invalid weekday')
@@ -21,13 +23,15 @@ def plan(weekday):
     while True:        
         print('=' * 20)
         meal = input('Enter ' + meals[index] + ': ')
-        if meal == 'exit':
-            return
-        if meal == 'suggest':
-            suggest()
-            meal = None
-        elif meal == 'select':
-            meal = select()
+        
+        match meal:
+            case 'exit':
+                return
+            case 'suggest':
+                suggest()
+                meal = None
+            case 'select':
+                meal = select()
             
         if meal is None:
             continue
@@ -46,22 +50,17 @@ def plan(weekday):
                         break
         if index == 3:
             break
-    print('=' * 20)
-    print(f'{weekday} Planned!')
-    print('Breakfast: ' + meal_arr[0])
-    print('Lunch: ' + meal_arr[1])
-    print('Dinner: ' + meal_arr[2])
-    print('=' * 20)
+    print_meals(weekday, meal_arr)
     db.insert_plan(weekdays_lower.index(weekday_lower) + 1, db.find_mealid(meal_arr[0]), db.find_mealid(meal_arr[1]), db.find_mealid(meal_arr[2]))
 
 def show(weekday='all'):
     'Show the current plan:  SHOW'
-    weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    weekdays_lower = [day.lower() for day in weekdays]
+    
     weekday_lower = weekday.lower()
     if weekday_lower not in weekdays_lower and not weekday_lower == 'all':
         print('Invalid input')
-        
+        return 
+    
     if weekday_lower == 'all':
         for day in weekdays:
             show(day)
@@ -71,12 +70,7 @@ def show(weekday='all'):
             print('=' * 20)
             print(f'{weekday} Not Planned')
         else:
-            print('=' * 20)
-            print(f'{weekday} Plan')
-            print('Breakfast: ' + db.find_meal(plan[2]))
-            print('Lunch: ' + db.find_meal(plan[3]))
-            print('Dinner: ' + db.find_meal(plan[4]))
-        
+            print_plan(weekday, plan)
     
 def clear():
     'Clear all plans'
@@ -111,41 +105,56 @@ def select():
     while True:
         if page < 0:
             page = 0
-        print('=' * 20)
-        for i in range(page * 5, min((page + 1) * 5, len(data))):
-            print(f'{i + 1}: {data[i][1]}')
-        print('=' * 20)
-        print(f'Page {page}')
-        print('n: next page | p: previous page | q: quit')
-        digit_buffer = ''
-        while True:
-            if msvcrt.kbhit():
-                key = msvcrt.getch().decode('utf-8').lower()
-                if key == 'n':
-                    page += 1
-                    break
-                elif key == 'p':
-                    page -= 1
-                    break
-                elif key == 'q':
-                    return None
-                elif key.isdigit():
-                    digit_buffer += key
-                    os.system('cls' if os.name == 'nt' else 'clear')
-                    print('=' * 20)
-                    for i in range(page * 5, min((page + 1) * 5, len(data))):
-                        print(f'{i + 1}: {data[i][1]}')
-                    print('=' * 20)
-                    print(f'Page {page}')
-                    print('n: next page | p: previous page | q: quit')
-                    print(f'Selecting Item: {digit_buffer}')
-                elif key == '\x08':
-                    digit_buffer = digit_buffer[:-1]
-                    print(f'Selecting Item: {digit_buffer}')
-                elif key == '\r':
-                    return data[int(digit_buffer) - 1][1]
+        print_page(page, data)
+        return select_msvcrt()
     return None
-        
+
+"""Helper Print Functions"""
+def print_meals(weekday, meal_arr):
+    print('=' * 20)
+    print(f'{weekday} Planned!')
+    print('Breakfast: ' + meal_arr[0])
+    print('Lunch: ' + meal_arr[1])
+    print('Dinner: ' + meal_arr[2])
+    print('=' * 20)
     
+def print_plan(weekday, plan):
+    print('=' * 20)
+    print(f'{weekday} Plan')
+    print('Breakfast: ' + db.find_meal(plan[2]))
+    print('Lunch: ' + db.find_meal(plan[3]))
+    print('Dinner: ' + db.find_meal(plan[4]))
+    
+def print_page(page, data):
+    print('=' * 20)
+    for i in range(page * 5, min((page + 1) * 5, len(data))):
+        print(f'{i + 1}: {data[i][1]}')
+    print('=' * 20)
+    print(f'Page {page}')
+    print('n: next page | p: previous page | q: quit')
+    
+def select_msvcrt():
+    digit_buffer = ''
+    while True:
+        if msvcrt.kbhit():
+            key = msvcrt.getch().decode('utf-8').lower()
+            if key == 'n':
+                page += 1
+                break
+            elif key == 'p':
+                page -= 1
+                break
+            elif key == 'q':
+                return None
+            elif key.isdigit():
+                digit_buffer += key
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print_page(page, data)
+                print(f'Selecting Item: {digit_buffer}')
+            elif key == '\x08':
+                digit_buffer = digit_buffer[:-1]
+                print(f'Selecting Item: {digit_buffer}')
+            elif key == '\r':
+                return int(digit_buffer) - 1
 if __name__ == '__main__':
     plan_to_json()
