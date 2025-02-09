@@ -21,7 +21,7 @@ class FPShell(cmd.Cmd):
         
     def do_show(self, arg):
         'Show the current plan:  SHOW'
-        show()
+        show(*parse(arg))
         
     def do_exit(self, arg):
         'Exit the shell:  EXIT'

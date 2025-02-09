@@ -49,12 +49,12 @@ def plan(weekday):
     print('Dinner: ' + meal_arr[2])
     db.insert_plan(weekdays_lower.index(weekday_lower) + 1, db.find_mealid(meal_arr[0]), db.find_mealid(meal_arr[1]), db.find_mealid(meal_arr[2]))
 
-def show(weekday):
+def show(weekday='all'):
     'Show the current plan:  SHOW'
     weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     weekdays_lower = [day.lower() for day in weekdays]
     weekday_lower = weekday.lower()
-    if weekday_lower not in weekdays_lower or not weekday_lower == 'all':
+    if weekday_lower not in weekdays_lower and not weekday_lower == 'all':
         print('Invalid input')
         
     if weekday_lower == 'all':
@@ -62,13 +62,14 @@ def show(weekday):
             show(day)
     else:
         plan = db.find_plan(weekdays_lower.index(weekday_lower) + 1)
+        print(plan)
         if plan is None:
             print(f'{weekday_lower} not planned')
         else:
             print(f'{weekday_lower} Plan')
-            print('Breakfast: ' + db.find_meal(plan[1]))
-            print('Lunch: ' + db.find_meal(plan[2]))
-            print('Dinner: ' + db.find_meal(plan[3]))
+            print('Breakfast: ' + db.find_meal(plan[2]))
+            print('Lunch: ' + db.find_meal(plan[3]))
+            print('Dinner: ' + db.find_meal(plan[4]))
             
 """Helper Functions"""
 def suggest():

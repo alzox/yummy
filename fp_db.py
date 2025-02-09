@@ -53,8 +53,7 @@ def insert_meal(meal):
     
 """Find Functions"""
 
-MEALID_INDEX = 0
-MEALNAME_INDEX = 1
+FIRST_ELEMENT = 0
 
 def get_meals():
     conn = sqlite3.connect(file)
@@ -68,7 +67,7 @@ def find_mealid(meal):
     conn = sqlite3.connect(file)
     c = conn.cursor()
     c.execute("SELECT meal_id FROM Meals WHERE meal_name=?", (meal,))
-    meal_id = c.fetchone()[MEALID_INDEX]
+    meal_id = c.fetchone()[FIRST_ELEMENT]
     conn.close()
     return meal_id
 
@@ -76,7 +75,7 @@ def find_meal(meal_id):
     conn = sqlite3.connect(file)
     c = conn.cursor()
     c.execute("SELECT meal_name FROM Meals WHERE meal_id=?", (meal_id,))
-    meal = c.fetchone()[MEALNAME_INDEX]
+    meal = c.fetchone()[0]
     conn.close()
     return meal
 
