@@ -1,4 +1,5 @@
 import json
+import os
 import msvcrt
 import fp_db as db
 
@@ -9,13 +10,16 @@ def plan(weekday):
     weekday_lower = weekday.lower()
     if weekday_lower not in weekdays_lower:
         print('Invalid weekday')
-        
-    print('Type suggest to get 5 suggestions')
-    print('Type select to select from existing recipes')
+        return
+    print('=' * 20)
+    print('"suggest" for recipe suggestions')
+    print('"select" to select from existing recipes')
+    print('"exit" to exit planning')
     meals = ['breakfast', 'lunch', 'dinner']
     meal_arr = []
     index = 0
     while True:        
+        print('=' * 20)
         meal = input('Enter ' + meals[index] + ': ')
         if meal == 'exit':
             return
@@ -28,7 +32,7 @@ def plan(weekday):
         if meal is None:
             continue
         else:
-            print('Confirm ' + meal + ' (y/n): ')
+            print('Confirm ' + meal + '? (y/n)')
             
             while True:
                 if msvcrt.kbhit():
@@ -42,11 +46,12 @@ def plan(weekday):
                         break
         if index == 3:
             break
-    
-    print(f'{weekday_lower} planned')
+    print('=' * 20)
+    print(f'{weekday} Planned!')
     print('Breakfast: ' + meal_arr[0])
     print('Lunch: ' + meal_arr[1])
     print('Dinner: ' + meal_arr[2])
+    print('=' * 20)
     db.insert_plan(weekdays_lower.index(weekday_lower) + 1, db.find_mealid(meal_arr[0]), db.find_mealid(meal_arr[1]), db.find_mealid(meal_arr[2]))
 
 def show(weekday='all'):
@@ -62,14 +67,16 @@ def show(weekday='all'):
             show(day)
     else:
         plan = db.find_plan(weekdays_lower.index(weekday_lower) + 1)
-        print(plan)
         if plan is None:
-            print(f'{weekday_lower} not planned')
+            print('=' * 20)
+            print(f'{weekday} Not Planned')
         else:
-            print(f'{weekday_lower} Plan')
+            print('=' * 20)
+            print(f'{weekday} Plan')
             print('Breakfast: ' + db.find_meal(plan[2]))
             print('Lunch: ' + db.find_meal(plan[3]))
             print('Dinner: ' + db.find_meal(plan[4]))
+        
     
 def clear():
     'Clear all plans'
@@ -104,8 +111,10 @@ def select():
     while True:
         if page < 0:
             page = 0
+        print('=' * 20)
         for i in range(page * 5, min((page + 1) * 5, len(data))):
             print(f'{i + 1}: {data[i][1]}')
+        print('=' * 20)
         print(f'Page {page}')
         print('n: next page | p: previous page | q: quit')
         digit_buffer = ''
@@ -122,6 +131,13 @@ def select():
                     return None
                 elif key.isdigit():
                     digit_buffer += key
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    print('=' * 20)
+                    for i in range(page * 5, min((page + 1) * 5, len(data))):
+                        print(f'{i + 1}: {data[i][1]}')
+                    print('=' * 20)
+                    print(f'Page {page}')
+                    print('n: next page | p: previous page | q: quit')
                     print(f'Selecting Item: {digit_buffer}')
                 elif key == '\x08':
                     digit_buffer = digit_buffer[:-1]

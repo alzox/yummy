@@ -45,7 +45,7 @@ def insert_meal(meal):
         conn.commit()
     except sqlite3.IntegrityError as e:
         if 'UNIQUE constraint failed' in str(e):
-            print(f"Error: The meal '{meal}' already exists.")
+            pass
         else:
             raise
     finally:

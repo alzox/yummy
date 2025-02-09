@@ -29,6 +29,10 @@ class FPShell(cmd.Cmd):
         else:
             return self.weekdays[:] + ["all"]
         
+    def do_export(self, arg):
+        'Export the current plan:  EXPORT'
+        plan_to_json()
+        
     def do_exit(self, arg):
         'Exit the shell:  EXIT'
         print('Thank you for using the food planner')
