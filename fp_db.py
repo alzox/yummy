@@ -87,7 +87,7 @@ def find_plan(weekday_id):
     conn.close()
     return plan
 
-""" Aggregate Functions """
+"""Aggregate Functions"""
 
 def export_plans():
     conn = sqlite3.connect(file)

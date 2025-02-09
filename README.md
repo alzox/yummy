@@ -7,6 +7,7 @@ pyreadline3
 keyboard
 
 ## To-do
-better prints
-ui flow?
-review 3-tiered and refactor
+* more stylistic prints
+* review ui flow
+* refactor fp_funcs
+* add more utilities

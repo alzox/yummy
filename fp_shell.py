@@ -1,4 +1,4 @@
-import cmd, sys
+import cmd, sys, os
 from fp_funcs import * 
 
 class FPShell(cmd.Cmd):
@@ -32,6 +32,10 @@ class FPShell(cmd.Cmd):
     def do_export(self, arg):
         'Export the current plan:  EXPORT'
         plan_to_json()
+        
+    def do_clear(self, arg):
+        'Clear shell screen:  CLEAR'
+        os.system('cls' if os.name == 'nt' else 'clear')
         
     def do_exit(self, arg):
         'Exit the shell:  EXIT'
