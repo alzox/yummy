@@ -7,6 +7,7 @@ pyreadline3
 keyboard
 
 ## To-do
+* YOU NEED TO REFACTOR
 * more stylistic prints
 * review ui flow
 * refactor fp_funcs

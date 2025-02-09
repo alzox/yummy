@@ -30,7 +30,18 @@ class FPShell(cmd.Cmd):
         else:
             return self.weekdays[:] + ["all"]
         
-    def do_export(self, arg):
+    def do_edit(self, arg):
+        'Edit a day:  EDIT day_of_week'
+        edit(*parse(arg))
+        self.do_export()
+    
+    def complete_edit(self, text, line, begidx, endidx):
+        if text:
+            return [weekday for weekday in self.weekdays if weekday.startswith(text)]
+        else:
+            return self.weekdays[:]
+        
+    def do_export(self, arg=None):
         'Export the current plan:  EXPORT'
         plan_to_json()
         

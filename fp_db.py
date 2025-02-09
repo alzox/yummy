@@ -37,6 +37,19 @@ def update_plan(weekday_id, breakfast_id, lunch_id, dinner_id):
     conn.commit()
     conn.close()
     
+def update_plan(weekday_id, meal_str, meal_id):
+    conn = sqlite3.connect(file)
+    c = conn.cursor()
+    match meal_str:
+        case 'breakfast':
+            c.execute("UPDATE Plans SET breakfast_id=? WHERE weekday_id=?", (meal_id, weekday_id))
+        case 'lunch':
+            c.execute("UPDATE Plans SET lunch_id=? WHERE weekday_id=?", (meal_id, weekday_id))
+        case 'dinner':
+            c.execute("UPDATE Plans SET dinner_id=? WHERE weekday_id=?", (meal_id, weekday_id))
+    conn.commit()
+    conn.close()
+    
 def insert_meal(meal):
     conn = sqlite3.connect(file)
     c = conn.cursor()
