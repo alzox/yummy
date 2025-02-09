@@ -12,12 +12,12 @@ class FPShell(cmd.Cmd):
         plan(*parse(arg))
         
     weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-        
+            
     def complete_plan(self, text, line, begidx, endidx):
         if text:
             return [weekday for weekday in self.weekdays if weekday.startswith(text)]
         else:
-            return self.weekdays
+            return self.weekdays[:]
         
         
     def do_exit(self, arg):
