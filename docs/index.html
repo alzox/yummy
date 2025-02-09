@@ -4,39 +4,189 @@
     <meta charset="UTF-8">
     <meta name="description" content="Food Planner - Plan your meals efficiently">
     <meta name="author" content="Your Name">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Food Planner</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+     <!-- particles.js lib - >https://github.com/VincentGarreau/particles.js -->
+    <script src="http://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     
+    <style>
+        
+        /*[class*="col-"] {
+            box-sizing: border-box;
+            border: 1px solid black;
+        }*/
+        #grocery-list {
+            width: 100%;
+            float: left;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0;
+        }
+        #grocery-list .row {
+            display: flex;
+            align-items: center;
+            width: 75%;
+            align-items: center;
+        }
+        #grocery-list input {
+            width: 20px;
+            height: 25px;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;;
+        }
+        #list {
+            float: left;
+        }
+        #list .row {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+        #particles-js {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            z-index: -1;
+        }
+        .weekday {
+            width: 50%;
+            float: left;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+        .col-1 input {
+            width: 20px;
+            height: 25px;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;;
+        }
+        .col-1 {
+            display: flex;
+            justify-content: flex-end;
+            padding: 0;
+            margin-left: auto;
+        }
+        .row {
+            margin: 0;
+        }
+        .col-10 {
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* media queries */
+        @media (max-width: 1200px) {
+            #grocery-list {
+                width: 100%;
+            }
+            #grocery-list .row {
+                width: 100%;
+            }
+            #list {
+                width: 50%;
+            }
+            #list .row {
+                width: 100%;
+            }
+            .weekday {
+                width: 100%;
+                padding: 0;
+            }
+            .col-8 {
+                width: 50% !important;
+                flex: initial !important;
+                max-width: initial !important;
+            }
+            .col-4 {
+                width: 50% !important;
+                flex: initial !important;
+                max-width: initial !important;
+            }
+        }
+
+        @media (max-width: 600px) {
+            /* set column width to 100% */
+            .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12 {
+                width: 100% !important;
+            }
+            h1 {
+                font-size: 2.25em;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Food Planner</h1>
+
+    <section class="row">
+        <div id="background" class="col-12">
+            <div id="particles-js"></div>
+        </div>
+    </section>
+
+    <header class="row">
+        <div class="col-12">
+            <h1>henry's weekly food planner</h1>
+        </div>
     </header>
-    <section>
-        <div id="list">
-            <div id="monday" class="weekday">
+
+    <section class="row">
+        <div id="list" class="col-8">
+            <div id="sunday" class="col-12 weekday">
+                <h2>Sunday</h2>
+            </div>
+            <div id="monday" class="col-12 weekday">
                 <h2>Monday</h2>
             </div>
-            <div id="tuesday" class="weekday">
+            <div id="tuesday" class="col-12 weekday">
                 <h2>Tuesday</h2>
             </div>  
-            <div id="wednesday" class="weekday">
+            <div id="wednesday" class="col-12 weekday">
                 <h2>Wednesday</h2>
             </div>
-            <div id="thursday" class="weekday">
+            <div id="thursday" class="col-12 weekday">
                 <h2>Thursday</h2>
             </div>
-            <div id="friday" class="weekday">
+            <div id="friday" class="col-12 weekday">
                 <h2>Friday</h2>
             </div>  
-            <div id="saturday" class="weekday">
+            <div id="saturday" class="col-12 weekday">
                 <h2>Saturday</h2>
             </div>
-            <div id="sunday" class="weekday">
-                <h2>Sunday</h2>
+        </div>
+
+        <div id="grocery-list" class="col-4">
+            <h2>Grocery List</h2>
+            <div class="row">
+                <div class="col-1">
+                    <input type="checkbox">
+                </div>
+                <div class="col-11">
+                    <h4>2x Large Apples</h4>
+                </div>
+
             </div>
         </div>
     </section>
+
 </body>
 
 <script>
@@ -52,7 +202,30 @@
                 let weekday = document.getElementById(day);
                 meals.forEach(meal => {
                     let mealDiv = document.createElement('div');
-                    mealDiv.innerHTML = dayPlan[meal];
+                    mealDiv.className = 'row';
+
+                    /* add checkbox to each meal */
+                    let checkboxDiv = document.createElement('div');
+                    checkboxDiv.className = 'col-1';
+
+                    let checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = `${day}-${meal}`;
+                    checkbox.checked = localStorage.getItem(checkbox.id) === 'true';
+
+                    checkbox.addEventListener('change', () => {
+                        localStorage.setItem(checkbox.id, checkbox.checked);
+                    });
+
+                    checkboxDiv.appendChild(checkbox);
+                    mealDiv.appendChild(checkboxDiv);
+
+                    mealUppercase = meal.charAt(0).toUpperCase() + meal.slice(1);
+                    let mealContent = document.createElement('div');
+                    mealContent.className = 'col-11';
+                    mealContent.innerHTML = `<h4>${mealUppercase}: ${dayPlan[meal]}</h4>`;
+                    mealDiv.appendChild(mealContent);
+
                     console.log(mealDiv);
                     weekday.appendChild(mealDiv);
                 });
@@ -60,4 +233,5 @@
         });
     });
 </script>
+<script src="\docs\scripts\particle.js"></script>
 </html>
