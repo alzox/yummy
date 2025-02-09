@@ -55,6 +55,14 @@ def insert_meal(meal):
 
 MEALID_INDEX = 0
 MEALNAME_INDEX = 1
+
+def get_meals():
+    conn = sqlite3.connect(file)
+    c = conn.cursor()
+    c.execute("SELECT * FROM Meals")
+    meals = c.fetchall()
+    conn.close()
+    return meals
     
 def find_mealid(meal):
     conn = sqlite3.connect(file)
@@ -86,5 +94,14 @@ if __name__ == "__main__":
     print(find_mealid("Chicken Parmesan"))
     print(find_mealid("Chicken Marsala"))
     print(find_mealid("Chicken Piccata"))
-    clear_meals()
-    clear_plans()   
+    
+    insert_meal("Hot Dog")
+    insert_meal("Hamburger")
+    insert_meal("Pizza")
+    insert_meal("Taco")
+    insert_meal("Burrito")
+    
+    print(len(get_meals()))
+    print(get_meals())
+    # clear_meals()
+    # clear_plans()   

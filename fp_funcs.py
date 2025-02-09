@@ -11,6 +11,7 @@ def plan(weekday):
         print('Invalid weekday')
         
     print('Type suggest to get 5 suggestions')
+    print('Type select to select from existing recipes')
     meals = ['breakfast', 'lunch', 'dinner']
     meal_arr = []
     index = 0
@@ -18,6 +19,11 @@ def plan(weekday):
         meal = input('Enter ' + meals[index] + ': ')
         if meal == 'suggest':
             suggest()
+        elif meal == 'select':
+            meal = select()
+            
+        if meal is None:
+            continue
         else:
             print('Confirm ' + meal + ' (y/n): ')
             
@@ -41,7 +47,6 @@ def plan(weekday):
     db.insert_plan(weekdays_lower.index(weekday_lower) + 1, db.find_mealid(meal_arr[0]), db.find_mealid(meal_arr[1]), db.find_mealid(meal_arr[2]))
     
     
-    
 '''helper function'''
 def suggest():
     #!STUBBED
@@ -52,6 +57,40 @@ def suggest():
     print('Recipe 3: Chicken Parmesan')
     print('Recipe 4: Chicken Marsala')
     print('Recipe 5: Chicken Piccata')
+    
+def select():
+    'Page through existing recipes'
+    data = db.get_meals()
+    page = 0
+    while True:
+        if page < 0:
+            page = 0
+        for i in range(page * 5, min((page + 1) * 5, len(data))):
+            print(f'{i + 1}: {data[i][1]}')
+        print(f'Page {page}')
+        print('n: next page | p: previous page | q: quit')
+        digit_buffer = ''
+        while True:
+            if msvcrt.kbhit():
+                key = msvcrt.getch().decode('utf-8').lower()
+                if key == 'n':
+                    page += 1
+                    break
+                elif key == 'p':
+                    page -= 1
+                    break
+                elif key == 'q':
+                    return None
+                elif key.isdigit():
+                    digit_buffer += key
+                    print(f'Selecting Item: {digit_buffer}')
+                elif key == '\x08':
+                    digit_buffer = digit_buffer[:-1]
+                    print(f'Selecting Item: {digit_buffer}')
+                elif key == '\r':
+                    return data[int(digit_buffer) - 1][1]
+    return None
+        
     
 if __name__ == '__main__':
     "Short tests"
