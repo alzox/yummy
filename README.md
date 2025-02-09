@@ -5,3 +5,7 @@ total revamp, going to be a personal web-page to view and update groceries hoste
 ## Requirements
 pyreadline3
 keyboard
+
+## To-do
+better prints
+ui flow?

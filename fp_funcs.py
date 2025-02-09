@@ -47,7 +47,7 @@ def plan(weekday):
     db.insert_plan(weekdays_lower.index(weekday_lower) + 1, db.find_mealid(meal_arr[0]), db.find_mealid(meal_arr[1]), db.find_mealid(meal_arr[2]))
     
     
-'''helper function'''
+"""Helper Functions"""
 def suggest():
     #!STUBBED
     'Suggest 5 random recipes'
