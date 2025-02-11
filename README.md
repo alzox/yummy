@@ -7,6 +7,7 @@ pyreadline3
 keyboard
 
 ## To-do
+* Write a config thin-api
 * YOU NEED TO REFACTOR
 * REMOVE HARDCODED FILE LOCS TO CONFIG
 * more stylistic prints
