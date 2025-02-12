@@ -110,6 +110,8 @@ def edit(weekday):
                 else:
                     print('Confirm ' + meal + '? (y/n)')
                     
+                    db.insert_meal(meal)
+                    
                     while True:
                         if msvcrt.kbhit():
                             key = msvcrt.getch().decode('utf-8').lower()
