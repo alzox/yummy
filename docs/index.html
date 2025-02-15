@@ -178,10 +178,45 @@
 
         <div id="grocery-list" class="col-4">
             <h2>Grocery List</h2>
+            <!-- add a input box to add items locally-->
+            <input type="text" id="grocery-input" placeholder="add emergency items here" class="form-control" style="width: 90%; margin-top: 5px; margin-bottom: 10px ">
         </div>
     </section>
 
 </body>
+
+<script>
+    /* event listener for input box */
+    document.getElementById('grocery-input').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            let groceryDiv = document.getElementById('grocery-list');
+            let groceryRow = document.createElement('div');
+            groceryRow.className = 'row';
+
+            let checkboxDiv = document.createElement('div');
+            checkboxDiv.className = 'col-1';
+            let checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = document.getElementById('grocery-input').value;
+            checkbox.checked = false;
+
+            checkbox.addEventListener('change', () => {
+                localStorage.setItem(checkbox.id, checkbox.checked);
+            });
+
+            checkboxDiv.appendChild(checkbox);
+
+            let groceryContent = document.createElement('div');
+            groceryContent.className = 'col-11';
+            groceryContent.innerHTML = `<h4>${document.getElementById('grocery-input').value}</h4>`;
+            groceryRow.appendChild(checkboxDiv);
+            groceryRow.appendChild(groceryContent);
+
+            groceryDiv.appendChild(groceryRow);
+            document.getElementById('grocery-input').value = '';
+        }
+    });
+</script>
 
 <script>
     /* retrieve data from plans.json */
