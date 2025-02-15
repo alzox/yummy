@@ -42,6 +42,10 @@ class FPShell(cmd.Cmd):
         else:
             return self.weekdays[:]
         
+    def do_grocery(self, arg):
+        'Plan the whole grocery-list:  GROCERY item'
+        grocery(*parse(arg))
+        
     def do_export(self, arg=None):
         'Export the current plan:  EXPORT'
         plan_to_json()
