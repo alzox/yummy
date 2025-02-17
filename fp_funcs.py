@@ -74,6 +74,7 @@ def edit(weekday):
             index = 0
             
         if msvcrt.kbhit():
+            
             # decode arrow to str
             key = msvcrt.getch()
             if key == b'\xe0':
@@ -201,6 +202,7 @@ def select():
     while True:
         if page < 0:
             page = 0
+        os.system('cls' if os.name == 'nt' else 'clear')
         print_page(page, data)
         digit_buffer = ''
         while True:
