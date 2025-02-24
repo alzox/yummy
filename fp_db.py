@@ -37,7 +37,7 @@ def update_plan(weekday_id, breakfast_id, lunch_id, dinner_id):
     conn.commit()
     conn.close()
     
-def update_plan(weekday_id, meal_str, meal_id):
+def edit_plan(weekday_id, meal_str, meal_id):
     conn = sqlite3.connect(file)
     c = conn.cursor()
     match meal_str:

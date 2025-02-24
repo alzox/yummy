@@ -117,7 +117,7 @@ def edit(weekday):
                         if msvcrt.kbhit():
                             key = msvcrt.getch().decode('utf-8').lower()
                             if key == 'y':
-                                db.update_plan(weekdays_lower.index(weekday_lower) + 1, meals[index], db.find_mealid(meal))
+                                db.edit_plan(weekdays_lower.index(weekday_lower) + 1, meals[index], db.find_mealid(meal))
                                 return
                             elif key == 'n':
                                 break
