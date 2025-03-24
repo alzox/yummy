@@ -1,6 +1,6 @@
-import cmd, sys, os
+import cmd, sys, os, re
 from fp_funcs import * 
-from fp_utils import is_valid_weekday
+from fp_utils import is_valid_weekday, recursive_listdir
 
 class FPShell(cmd.Cmd):
     intro = '\nWelcome to the yummy food planning cli :)!\nType help or ? to list commands.\n'
@@ -52,13 +52,29 @@ class FPShell(cmd.Cmd):
         'Plan the whole grocery-list:  GROCERY item'
         grocery(*parse(arg))
         
+    def do_import(self, arg=None):
+        'Import into SQL from JSON:  IMPORT'
+        if re.search('.json', arg):
+            import_json(arg)
+        else:
+            print('Invalid file type\n')
+            return
+    
+    def complete_import(self, text, line, begidx, endidx):
+        both_extensions = recursive_listdir(".json") 
+        if text:
+            return [file for file in both_extensions if file.startswith(text)]
+        else:
+            return both_extensions
+    
+        
     def do_export(self, arg=None):
         'Export the current plan:  EXPORT'
-        plan_to_json()
+        export_json()
         
     def do_exit(self, arg):
         'Exit the shell:  EXIT'
-        print('Thank you for using the food planner')
+        print('Thank you for using the food planner\n')
         return True
 
 def parse(arg):

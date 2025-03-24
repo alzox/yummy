@@ -30,6 +30,25 @@ def index_page(page, index):
         return index
     else:
         return page * 5 + index % 5
+    
+# --- AUTO-COMPLETE FUNCTIONS ---
+
+def recursive_listdir(extension = None):
+    if extension is None:
+        return os.listdir()
+    else:   
+        items = []
+        for file in os.listdir():
+            if file.endswith(extension):
+                items.append(file)
+            if os.path.isdir(file):
+                path = os.getcwd()
+                os.chdir(file)
+                inner_items = recursive_listdir(extension)
+                for inner_item in inner_items:
+                    items.append(file + '/' + inner_item)
+                os.chdir(path)
+        return items
        
     
 # --- PRESENTATION FUNCTIONS ---

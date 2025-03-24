@@ -1,1 +1,76 @@
-[{"weekday": "Saturday", "breakfast": "Hot Dog", "lunch": "Stew", "dinner": "Omelette"}, {"weekday": "Sunday", "breakfast": "Cereal", "lunch": "Tacos", "dinner": "Tacos"}, {"weekday": "Monday", "breakfast": "Bagel", "lunch": "Omelette", "dinner": "Ramen"}, {"weekday": "Tuesday", "breakfast": "Bagel", "lunch": "Stew", "dinner": "Omelette"}, {"weekday": "Wednesday", "breakfast": "Cereal", "lunch": "Curry Fries", "dinner": "Pasta"}, {"weekday": "Thursday", "breakfast": "Cereal", "lunch": "Omelette", "dinner": "Pasta"}, {"weekday": "Friday", "breakfast": "Vibes", "lunch": "Vibes", "dinner": "Vibes"}]
+{
+    "plans": [
+        {
+            "weekday": "Monday",
+            "breakfast": "Swedish Pastry",
+            "lunch": "Panera",
+            "dinner": "Ramen"
+        },
+        {
+            "weekday": "Tuesday",
+            "breakfast": null,
+            "lunch": null,
+            "dinner": null
+        },
+        {
+            "weekday": "Wednesday",
+            "breakfast": null,
+            "lunch": null,
+            "dinner": null
+        },
+        {
+            "weekday": "Thursday",
+            "breakfast": null,
+            "lunch": null,
+            "dinner": null
+        },
+        {
+            "weekday": "Friday",
+            "breakfast": null,
+            "lunch": null,
+            "dinner": null
+        },
+        {
+            "weekday": "Saturday",
+            "breakfast": null,
+            "lunch": null,
+            "dinner": null
+        },
+        {
+            "weekday": "Sunday",
+            "breakfast": null,
+            "lunch": null,
+            "dinner": null
+        }
+    ],
+    "meals": [
+        {
+            "id": 6,
+            "name": "Swedish Pastry"
+        },
+        {
+            "id": 7,
+            "name": "Panera"
+        },
+        {
+            "id": 8,
+            "name": "Ramen"
+        },
+        {
+            "id": 9,
+            "name": "Money"
+        },
+        {
+            "id": 10,
+            "name": "Burger"
+        },
+        {
+            "id": 11,
+            "name": "Pizza"
+        },
+        {
+            "id": 12,
+            "name": "Pasta"
+        }
+    ]
+}

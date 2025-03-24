@@ -89,17 +89,39 @@ def setup_grocery():
         print('Grocery list setup')
         f.close()
     return
+
+def import_json(file):
+    'Import meals from JSON:  IMPORT_JSON file'
+    data = json.load(open(file))
     
-def plan_to_json():
+    for meal_obj in data['meals']:
+        db.insert_meal(meal_obj['name'])
+    print('Meals imported from JSON')
+    
+    for plan_obj in data['plans']:
+        db.edit_plan(weekday_to_index(plan_obj['weekday']), 'breakfast', plan_obj['breakfast'])
+        db.edit_plan(weekday_to_index(plan_obj['weekday']), 'lunch', plan_obj['lunch'])
+        db.edit_plan(weekday_to_index(plan_obj['weekday']), 'dinner', plan_obj['dinner'])
+    print('Plans imported from JSON')
+    
+    print('Import complete\n')
+    
+    
+ 
+def export_json():
     'Export plans to JSON'
-    JSON_PATH = r"C:\Users\commo\OneDrive - University of Virginia\School\STEM\CS\Coding Projects 2025\Food-Planner\docs\plans.json"
+    JSON_PATH=r"C:\Users\commo\OneDrive - University of Virginia\School\STEM\CS\alzox\yummy\docs\plans.json"
     print('Exporting plans to JSON')
+
     plans = db.export_plans()
-    # Serialize tuple (weekday, breakfast, lunch, dinner) to JSON
-    plans_dict = [{'weekday': plan[0], 'breakfast': plan[1], 'lunch': plan[2], 'dinner': plan[3]} for plan in plans]
+    plans_arr = [{'weekday': plan[0], 'breakfast': plan[1], 'lunch': plan[2], 'dinner': plan[3]} for plan in plans]
+    meals = db.get_meals()
+    meals_arr = [{'id': meal[0], 'name': meal[1]} for meal in meals]
+
+    json_dict = {"plans": plans_arr, "meals": meals_arr}
     with open(JSON_PATH, 'w') as f:
-        json.dump(plans_dict, f)
-    print('Plans exported to docs/plans.json')
+        json.dump(json_dict, f)
+    print('Plans exported to docs/plans.json\n')
     
 """Helper Functions"""
 def meal_select():
@@ -231,4 +253,4 @@ def print_page(page, data, index=None):
     print('(n: next page | p: previous page | q: quit)')
        
 if __name__ == '__main__':
-    meal_viewer()
+    pass
