@@ -1,119 +1,60 @@
 import json
-import signal
 import time
 import os
-import msvcrt
+
+from msvcrt import getch
+
 import fp_db as db
-from fp_utils import MEALS, WEEKDAYS_LOWER, clear_terminal, weekday_to_index, print_plan
-
-def signal_handler(sig, frame):
-    print('You pressed Ctrl+C!')
-    sys.exit(0)
-
-signal.signal(signal.SIGINT, signal_handler)
+from fp_utils import (
+    MEALS, WEEKDAYS_LOWER, 
+    pressed_arrow_key, pressed_up_arrow, pressed_down_arrow,
+    clear_terminal, weekday_to_index, print_plan)
 
 def plan(weekday):
     'Plan a day:  PLAN day_of_week'
     index = 0
     while True:
-        db_plan = db.find_plan(weekday_to_index(weekday))
+        db_plan = db.find_plan_print(weekday_to_index(weekday))
         clear_terminal()
         print_plan(db_plan, index, weekday)
         
-        key = msvcrt.getwch()
-        print(key) 
-    
-
-def edit(weekday):
-    'Edit a day:  EDIT day_of_week'
-    
-    weekday_lower = weekday.lower()
-    if weekday_lower not in weekdays_lower:
-        print('Invalid weekday')
-        return
-    print('=' * 20)
-    print("Editing: " + weekday)
-    
-    plan = db.find_plan(weekdays_lower.index(weekday_lower) + 1)
-    if plan is None:
-        print(f'{weekday} Not Planned')
-        return
-    
-    index = 0
-    print_edit(plan, index)
-    while True:
-        if index < 0:
-            index = 2
-        elif index > 2:
-            index = 0
-            
-        if msvcrt.kbhit():
-            
-            # decode arrow to str
-            key = msvcrt.getch()
-            if key == b'\xe0':
-                key = msvcrt.getch()
-                # up arrow
-                if key == b'H':
-                    index -= 1
-                    print_edit(plan, index)
-                # down arrow
-                elif key == b'P':
-                    index += 1
-                    os.system('cls' if os.name == 'nt' else 'clear')
-                    print_edit(plan, index)
-            # escape
-            elif key == b'\x1b':
+        key = getch()
+        
+        match key:
+            case b'\xe0':
+                key = getch()
+                if pressed_up_arrow(key):
+                    if index == 0:
+                        index = 2
+                    else:
+                        index -= 1
+                elif pressed_down_arrow(key):
+                    if index == 2:
+                        index = 0
+                    else:
+                        index += 1
+            case b'q': 
                 return
-            # enter
-            elif key == b'\r':
-                print_plan_option()
-                meal = input('Editing ' + meals[index] + ': ')
+            case b'\r':
+                meal = input(f'What\'s for {MEALS[index]}? ("idk" to use db): ')
                 
-                match meal:
-                    case 'exit':
-                        return
-                    case 'suggest':
-                        suggest()
-                        meal = None
-                    case 'select':
-                        meal = select()
-                        
+                if meal == 'idk':
+                    meal = meal_select()
+                
                 if meal is None:
                     continue
                 else:
-                    print('Confirm ' + meal + '? (y/n)')
-                    
                     db.insert_meal(meal)
-                    
-                    while True:
-                        if msvcrt.kbhit():
-                            key = msvcrt.getch().decode('utf-8').lower()
-                            if key == 'y':
-                                db.edit_plan(weekdays_lower.index(weekday_lower) + 1, meals[index], db.find_mealid(meal))
-                                return
-                            elif key == 'n':
-                                break
-                
+                    db.edit_plan(weekday_to_index(weekday), MEALS[index], db.find_mealid(meal))
+                    continue 
+               
 def show(weekday='all'):
     'Show the current plan:  SHOW'
-    
-    weekday_lower = weekday.lower()
-    if weekday_lower not in weekdays_lower and not weekday_lower == 'all':
-        print('Invalid input')
-        return 
-    
-    if weekday_lower == 'all':
-        for day in weekdays:
-            show(day)
+    if weekday == 'all':
+        print_plan_all() #!STUBBED, print all plans in db
     else:
-        plan = db.find_plan(weekdays_lower.index(weekday_lower) + 1)
-        if plan is None:
-            print('=' * 20)
-            print(f'{weekday} Not Planned')
-        else:
-            print_plan(weekday, plan)
-    
+        plan = db.find_plan_print(weekday_to_index(weekday))
+        print_meals(weekday, plan)
     
 def grocery():
     "Add ingredients to grocery list:  GROCERY"
@@ -163,39 +104,37 @@ def suggest():
     print('Recipe 4: Chicken Marsala')
     print('Recipe 5: Chicken Piccata')
     
-def select():
+def meal_select():
     'Page through existing recipes'
     data = db.get_meals()
     page = 0
+    digit_buffer = ''
     while True:
         if page < 0:
             page = 0
-        os.system('cls' if os.name == 'nt' else 'clear')
+            
+        clear_terminal()
         print_page(page, data)
-        digit_buffer = ''
-        while True:
-            if msvcrt.kbhit():
-                key = msvcrt.getch().decode('utf-8').lower()
-                if key == 'n':
-                    page += 1
-                    break
-                elif key == 'p':
-                    page -= 1
-                    break
-                elif key == 'q':
-                    return None
-                elif key.isdigit():
-                    digit_buffer += key
-                    os.system('cls' if os.name == 'nt' else 'clear')
-                    print_page(page, data)
-                    print(f'Selecting Item: {digit_buffer}')
-                elif key == '\x08':
-                    digit_buffer = digit_buffer[:-1]
-                    print(f'Selecting Item: {digit_buffer}')
-                elif key == '\r':
-                    return data[int(digit_buffer) - 1][1]
-    return None
-
+        print(f'\nEnter meal #: {digit_buffer}', end='')
+        
+        key = getch().decode('utf-8').lower()
+        
+        match key:
+            case 'n':
+                page += 1
+            case 'p':
+                page -= 1
+            case 'q':
+                return None
+            case '\x08':
+                digit_buffer = digit_buffer[:-1]
+            case '\r':
+                return data[int(digit_buffer)][1]
+            case _ if key.isdigit():
+                digit_buffer += key
+            case _:
+                pass
+            
 """Helper Print Functions"""
 def print_grocery():
     GROCERY_PATH = r"C:\Users\commo\OneDrive - University of Virginia\School\STEM\CS\Coding Projects 2025\Food-Planner\docs\grocery.csv"
@@ -236,12 +175,13 @@ def print_meals(weekday, meal_arr):
     print('=' * 20)
     
 def print_page(page, data):
+    print(f'Page {page}')
     print('=' * 20)
     for i in range(page * 5, min((page + 1) * 5, len(data))):
-        print(f'{i + 1}: {data[i][1]}')
+        print(f'{i}: {data[i][1]}')
     print('=' * 20)
-    print(f'Page {page}')
-    print('n: next page | p: previous page | q: quit')
+    print('(n: next page | p: previous page | q: quit)')
        
 if __name__ == '__main__':
-    grocery()
+    plan('monday')
+    show('monday')

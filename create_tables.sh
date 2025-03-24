@@ -3,11 +3,7 @@
 import sqlite3
 import os
 
-directory = "food.db"
-file = os.path.join(directory, "food.db")
-
-if not os.path.exists(directory):
-    os.makedirs(directory)
+file = "food.db"
 
 if os.path.exists(file):
     os.remove(file)
@@ -19,6 +15,11 @@ else:
 
 conn = sqlite3.connect(file)
 cur = conn.cursor()
+
+# Clear tables
+cur.execute('DROP TABLE IF EXISTS Weekdays')
+cur.execute('DROP TABLE IF EXISTS Meals')
+cur.execute('DROP TABLE IF EXISTS Plans')
 
 # Create Weekdays table
 cur.execute('''
@@ -62,6 +63,19 @@ INSERT OR IGNORE INTO Weekdays (weekday_id, weekday_name) VALUES (?, ?)
     (5, 'Friday'),
     (6, 'Saturday'),
     (7, 'Sunday')
+])
+
+# Initialize Plans to NULL
+cur.executemany('''
+INSERT INTO Plans (weekday_id, breakfast_id, lunch_id, dinner_id) VALUES (?, ?, ?, ?)
+''', [
+    (1, None, None, None),
+    (2, None, None, None),
+    (3, None, None, None),
+    (4, None, None, None),
+    (5, None, None, None),
+    (6, None, None, None),
+    (7, None, None, None)
 ])
 
 conn.commit()

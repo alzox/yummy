@@ -28,7 +28,7 @@ class FPShell(cmd.Cmd):
     def do_show(self, arg):
         'Show the current plan:  SHOW'
         weekday = parse(arg)[0]
-        if not is_valid_weekday(weekday):
+        if not is_valid_weekday(weekday) and weekday != 'all':
             print('Invalid weekday\n')
             return
         show(weekday)
@@ -38,18 +38,7 @@ class FPShell(cmd.Cmd):
             return [weekday for weekday in self.weekdays + ["all"] if weekday.startswith(text)]
         else:
             return self.weekdays[:] + ["all"]
-        
-    def do_edit(self, arg):
-        'Edit a day:  EDIT day_of_week'
-        edit(*parse(arg))
-        self.do_export()
-    
-    def complete_edit(self, text, line, begidx, endidx):
-        if text:
-            return [weekday for weekday in self.weekdays if weekday.startswith(text)]
-        else:
-            return self.weekdays[:]
-        
+                
     def do_grocery(self, arg):
         'Plan the whole grocery-list:  GROCERY item'
         grocery(*parse(arg))

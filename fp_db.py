@@ -1,6 +1,5 @@
 import sqlite3
-file = r"C:\Users\commo\OneDrive - University of Virginia\School\STEM\CS\Coding Projects 2025\Food-Planner\food.db"
-
+file = r"C:\Users\commo\OneDrive - University of Virginia\School\STEM\CS\alzox\yummy\food.db"
 """Clear Functions"""
 
 def clear_plans():
@@ -18,24 +17,6 @@ def clear_meals():
     conn.close()
     
 """Insert Functions"""
-
-def insert_plan(weekday_id, breakfast_id, lunch_id, dinner_id):
-    conn = sqlite3.connect(file)
-    c = conn.cursor()
-    
-    if find_plan(weekday_id) is not None:
-        update_plan(weekday_id, breakfast_id, lunch_id, dinner_id)
-    else:
-        c.execute("INSERT INTO Plans (weekday_id, breakfast_id, lunch_id, dinner_id) VALUES (?, ?, ?, ?)", (weekday_id, breakfast_id, lunch_id, dinner_id))
-    conn.commit()
-    conn.close()
-    
-def update_plan(weekday_id, breakfast_id, lunch_id, dinner_id):
-    conn = sqlite3.connect(file)
-    c = conn.cursor()
-    c.execute("UPDATE Plans SET breakfast_id=?, lunch_id=?, dinner_id=? WHERE weekday_id=?", (breakfast_id, lunch_id, dinner_id, weekday_id))
-    conn.commit()
-    conn.close()
     
 def edit_plan(weekday_id, meal_str, meal_id):
     conn = sqlite3.connect(file)
@@ -100,6 +81,15 @@ def find_plan(weekday_id):
     conn.close()
     return plan
 
+def find_plan_print(weekday_id):
+    conn = sqlite3.connect(file)
+    c = conn.cursor()
+    # select plans but now join with meals to get the meal names
+    c.execute("SELECT Meals.meal_name, Meals2.meal_name, Meals3.meal_name FROM Plans LEFT JOIN Meals ON Plans.breakfast_id = Meals.meal_id LEFT JOIN Meals Meals2 ON Plans.lunch_id = Meals2.meal_id LEFT JOIN Meals Meals3 ON Plans.dinner_id = Meals3.meal_id WHERE Plans.weekday_id = (?)", (weekday_id,))
+    plan = c.fetchone()
+    conn.close()
+    return plan
+
 """Aggregate Functions"""
 
 def export_plans():
@@ -112,27 +102,4 @@ def export_plans():
     return plans
 
 if __name__ == "__main__":
-    clear_plans()
-    clear_meals()
-    insert_plan(1, 1, 2, 3)
-    insert_meal("Chicken Alfredo")
-    insert_meal("Spaghetti Carbonara")
-    insert_meal("Chicken Parmesan")
-    insert_meal("Chicken Marsala")
-    insert_meal("Chicken Piccata")
-    print(find_mealid("Chicken Alfredo"))
-    print(find_mealid("Spaghetti Carbonara"))
-    print(find_mealid("Chicken Parmesan"))
-    print(find_mealid("Chicken Marsala"))
-    print(find_mealid("Chicken Piccata"))
-    
-    insert_meal("Hot Dog")
-    insert_meal("Hamburger")
-    insert_meal("Pizza")
-    insert_meal("Taco")
-    insert_meal("Burrito")
-    
-    print(len(get_meals()))
-    print(get_meals())
-    # clear_meals()
-    # clear_plans()   
+    find_plan_print(1)
