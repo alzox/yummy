@@ -1,16 +1,20 @@
 import cmd, sys, os
 from fp_funcs import * 
+from fp_utils import is_valid_weekday
 
 class FPShell(cmd.Cmd):
-    intro = 'Welcome to the food planning shell.   Type help or ? to list commands.\n'
+    intro = '\nWelcome to the yummy food planning cli :)!\nType help or ? to list commands.\n'
     
-    prompt = '(planner) '
+    prompt = '(yummy) '
     file = None
     
-    "-- basic food planning commands --"
     def do_plan(self, arg):
         'Plan a day:  PLAN day_of_week'
-        plan(*parse(arg))
+        weekday = parse(arg)[0]
+        if not is_valid_weekday(weekday):
+            print('Invalid weekday\n')
+            return
+        plan(weekday)
         self.do_export()
         
     weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -23,7 +27,11 @@ class FPShell(cmd.Cmd):
         
     def do_show(self, arg):
         'Show the current plan:  SHOW'
-        show(*parse(arg))
+        weekday = parse(arg)[0]
+        if not is_valid_weekday(weekday):
+            print('Invalid weekday\n')
+            return
+        show(weekday)
         
     def complete_show(self, text, line, begidx, endidx):
         if text:
@@ -49,14 +57,6 @@ class FPShell(cmd.Cmd):
     def do_export(self, arg=None):
         'Export the current plan:  EXPORT'
         plan_to_json()
-        
-    def do_reset(self, arg):
-        'Reset all of the plans: RESET'
-        clear()
-        
-    def do_clear(self, arg):
-        'Clear shell screen:  CLEAR'
-        os.system('cls' if os.name == 'nt' else 'clear')
         
     def do_exit(self, arg):
         'Exit the shell:  EXIT'

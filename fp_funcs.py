@@ -1,54 +1,28 @@
 import json
+import signal
+import time
 import os
 import msvcrt
 import fp_db as db
+from fp_utils import MEALS, WEEKDAYS_LOWER, clear_terminal, weekday_to_index, print_plan
 
-weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-weekdays_lower = [day.lower() for day in weekdays]
-meals = ['breakfast', 'lunch', 'dinner']
+def signal_handler(sig, frame):
+    print('You pressed Ctrl+C!')
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, signal_handler)
 
 def plan(weekday):
     'Plan a day:  PLAN day_of_week'
-    
-    weekday_lower = weekday.lower()
-    if weekday_lower not in weekdays_lower:
-        print('Invalid weekday')
-        return
-    print_plan_option()
-    meal_arr = []
     index = 0
-    while True:        
-        print('=' * 20)
-        meal = input('Enter ' + meals[index] + ': ')
+    while True:
+        db_plan = db.find_plan(weekday_to_index(weekday))
+        clear_terminal()
+        print_plan(db_plan, index, weekday)
         
-        match meal:
-            case 'exit':
-                return
-            case 'suggest':
-                suggest()
-                meal = None
-            case 'select':
-                meal = select()
-            
-        if meal is None:
-            continue
-        else:
-            print('Confirm ' + meal + '? (y/n)')
-            
-            while True:
-                if msvcrt.kbhit():
-                    key = msvcrt.getch().decode('utf-8').lower()
-                    if key == 'y':
-                        meal_arr.append(meal)
-                        db.insert_meal(meal)
-                        index += 1
-                        break
-                    elif key == 'n':
-                        break
-        if index == 3:
-            break
-    print_meals(weekday, meal_arr)
-    db.insert_plan(weekdays_lower.index(weekday_lower) + 1, db.find_mealid(meal_arr[0]), db.find_mealid(meal_arr[1]), db.find_mealid(meal_arr[2]))
+        key = msvcrt.getwch()
+        print(key) 
+    
 
 def edit(weekday):
     'Edit a day:  EDIT day_of_week'
@@ -82,7 +56,6 @@ def edit(weekday):
                 # up arrow
                 if key == b'H':
                     index -= 1
-                    os.system('cls' if os.name == 'nt' else 'clear')
                     print_edit(plan, index)
                 # down arrow
                 elif key == b'P':
@@ -168,11 +141,6 @@ def setup_grocery():
         f.close()
     return
     
-def clear():
-    'Clear all plans'
-    db.clear_plans()
-    print('All plans cleared')
-    
 def plan_to_json():
     'Export plans to JSON'
     JSON_PATH = r"C:\Users\commo\OneDrive - University of Virginia\School\STEM\CS\Coding Projects 2025\Food-Planner\docs\plans.json"
@@ -241,6 +209,7 @@ def print_grocery():
     print('Type "exit" to exit')
 
 def print_plan_option():
+    print('\n') 
     print('=' * 20)
     print('"suggest" for recipe suggestions')
     print('"select" to select from existing recipes')
@@ -265,13 +234,6 @@ def print_meals(weekday, meal_arr):
     print('Lunch: ' + meal_arr[1])
     print('Dinner: ' + meal_arr[2])
     print('=' * 20)
-    
-def print_plan(weekday, plan):
-    print('=' * 20)
-    print(f'{weekday} Plan')
-    print('Breakfast: ' + db.find_meal(plan[2]))
-    print('Lunch: ' + db.find_meal(plan[3]))
-    print('Dinner: ' + db.find_meal(plan[4]))
     
 def print_page(page, data):
     print('=' * 20)
