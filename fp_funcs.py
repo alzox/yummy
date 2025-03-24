@@ -8,7 +8,8 @@ import fp_db as db
 from fp_utils import (
     MEALS, WEEKDAYS_LOWER, 
     pressed_arrow_key, pressed_up_arrow, pressed_down_arrow,
-    clear_terminal, weekday_to_index, print_plan)
+    clear_terminal, weekday_to_index,
+    print_plan, print_meals) #! why two print_plan functions?
 
 def plan(weekday):
     'Plan a day:  PLAN day_of_week'
@@ -50,11 +51,13 @@ def plan(weekday):
                
 def show(weekday='all'):
     'Show the current plan:  SHOW'
+    print('\n')
     if weekday == 'all':
         print_plan_all() #!STUBBED, print all plans in db
     else:
         plan = db.find_plan_print(weekday_to_index(weekday))
         print_meals(weekday, plan)
+    print('\n')
     
 def grocery():
     "Add ingredients to grocery list:  GROCERY"
@@ -117,21 +120,21 @@ def meal_select():
         print_page(page, data)
         print(f'\nEnter meal #: {digit_buffer}', end='')
         
-        key = getch().decode('utf-8').lower()
+        key = getch()
         
         match key:
-            case 'n':
+            case b'n':
                 page += 1
-            case 'p':
+            case b'p':
                 page -= 1
-            case 'q':
+            case b'q':
                 return None
-            case '\x08':
+            case b'\x08':
                 digit_buffer = digit_buffer[:-1]
-            case '\r':
+            case b'\r':
                 return data[int(digit_buffer)][1]
             case _ if key.isdigit():
-                digit_buffer += key
+                digit_buffer += key.decode('utf-8')
             case _:
                 pass
             
@@ -166,13 +169,6 @@ def print_edit(plan, index):
     print('Use up and down arrows to navigate')
     print('Press enter to edit and escape to exit')
 
-def print_meals(weekday, meal_arr):
-    print('=' * 20)
-    print(f'{weekday} Planned!')
-    print('Breakfast: ' + meal_arr[0])
-    print('Lunch: ' + meal_arr[1])
-    print('Dinner: ' + meal_arr[2])
-    print('=' * 20)
     
 def print_page(page, data):
     print(f'Page {page}')

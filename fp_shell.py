@@ -15,7 +15,6 @@ class FPShell(cmd.Cmd):
             print('Invalid weekday\n')
             return
         plan(weekday)
-        self.do_export()
         
     weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
             
