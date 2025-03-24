@@ -1,5 +1,5 @@
 import json
-import time
+import requests
 import os
 
 from msvcrt import getch
@@ -105,6 +105,23 @@ def import_json(file):
     print('Plans imported from JSON')
     
     print('Import complete\n')
+    
+def import_json_url(url):
+    'Import meals from JSON:  IMPORT_JSON_URL url'
+    data = requests.get(url).json()
+    
+    for meal_obj in data['meals']:
+        db.insert_meal(meal_obj['name'])
+    print('Meals imported from JSON')
+    
+    for plan_obj in data['plans']:
+        db.edit_plan(weekday_to_index(plan_obj['weekday']), 'breakfast', plan_obj['breakfast'])
+        db.edit_plan(weekday_to_index(plan_obj['weekday']), 'lunch', plan_obj['lunch'])
+        db.edit_plan(weekday_to_index(plan_obj['weekday']), 'dinner', plan_obj['dinner'])
+    print('Plans imported from JSON')
+    
+    print('Import complete\n')
+    
     
     
  
@@ -253,4 +270,4 @@ def print_page(page, data, index=None):
     print('(n: next page | p: previous page | q: quit)')
        
 if __name__ == '__main__':
-    pass
+   import_json_url("https://raw.githubusercontent.com/alzox/yummy/refs/heads/master/docs/plans.json") 
