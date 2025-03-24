@@ -10,6 +10,9 @@ class FPShell(cmd.Cmd):
     
     def do_plan(self, arg):
         'Plan a day:  PLAN day_of_week'
+        if not arg:
+            print('No weekday specified\n')
+            return
         weekday = parse(arg)[0]
         if not is_valid_weekday(weekday):
             print('Invalid weekday\n')
@@ -26,6 +29,9 @@ class FPShell(cmd.Cmd):
         
     def do_show(self, arg):
         'Show the current plan:  SHOW'
+        if not arg:
+            show()
+            return
         weekday = parse(arg)[0]
         if not is_valid_weekday(weekday) and weekday != 'all':
             print('Invalid weekday\n')
@@ -37,6 +43,10 @@ class FPShell(cmd.Cmd):
             return [weekday for weekday in self.weekdays + ["all"] if weekday.startswith(text)]
         else:
             return self.weekdays[:] + ["all"]
+        
+    def do_db(self, arg):
+        'Show and manage the meals in the database:  DB'
+        db_meals()
                 
     def do_grocery(self, arg):
         'Plan the whole grocery-list:  GROCERY item'

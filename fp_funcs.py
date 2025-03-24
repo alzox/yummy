@@ -8,7 +8,7 @@ import fp_db as db
 from fp_utils import (
     MEALS, WEEKDAYS_LOWER, 
     pressed_arrow_key, pressed_up_arrow, pressed_down_arrow,
-    clear_terminal, weekday_to_index,
+    clear_terminal, weekday_to_index, index_page,
     print_plan, print_meals) #! why two print_plan functions?
 
 def plan(weekday):
@@ -48,7 +48,7 @@ def plan(weekday):
                     db.insert_meal(meal)
                     db.edit_plan(weekday_to_index(weekday), MEALS[index], db.find_mealid(meal))
                     continue 
-               
+
 def show(weekday='all'):
     'Show the current plan:  SHOW'
     print('\n')
@@ -58,6 +58,11 @@ def show(weekday='all'):
         plan = db.find_plan_print(weekday_to_index(weekday))
         print_meals(weekday, plan)
     print('\n')
+    
+def db_meals():
+    'Show and edite the current meals:  DB_MEALS'
+    db_viewer()
+    
     
 def grocery():
     "Add ingredients to grocery list:  GROCERY"
@@ -97,16 +102,6 @@ def plan_to_json():
     print('Plans exported to docs/plans.json')
     
 """Helper Functions"""
-def suggest():
-    #!STUBBED
-    'Suggest 5 random recipes'
-    print('Suggesting 5 random recipes')
-    print('Recipe 1: Chicken Alfredo')
-    print('Recipe 2: Spaghetti Carbonara')
-    print('Recipe 3: Chicken Parmesan')
-    print('Recipe 4: Chicken Marsala')
-    print('Recipe 5: Chicken Piccata')
-    
 def meal_select():
     'Page through existing recipes'
     data = db.get_meals()
@@ -135,6 +130,60 @@ def meal_select():
                 return data[int(digit_buffer)][1]
             case _ if key.isdigit():
                 digit_buffer += key.decode('utf-8')
+            case _:
+                pass
+
+def db_viewer():
+    'View all meals'
+    
+    index = 0 
+    page = 0
+    while True:
+        if page < 0:
+            page = 0
+        data = db.get_meals()
+        data_index = index_page(page, index)
+         
+        clear_terminal()
+        print_page(page, data, data_index)
+        print('(enter: edit | d: delete | a: add)\n')
+        
+        key = getch()
+        
+        match key:
+            case b'\xe0':
+                key = getch()
+                if pressed_up_arrow(key):
+                    if index == 0:
+                        index = 4
+                    else:
+                        index -= 1
+                elif pressed_down_arrow(key):
+                    if index == 4:
+                        index = 0
+                    else:
+                        index += 1
+            case b'\r':
+                meal = input(f'Edit {data[data_index][1]}: ')
+                if meal is None:
+                    continue
+                else:
+                    db.edit_meal(data[data_index][0], meal)  
+                    continue 
+            case b'd':
+                db.delete_meal(data[data_index][0])
+                continue
+            case b'a':
+                db.insert_meal(input('Add meal: '))
+                continue
+
+        match key:
+            case b'n':
+                page += 1
+            case b'p':
+                page -= 1
+            case b'q':
+                return
             case _:
                 pass
             
@@ -170,14 +219,16 @@ def print_edit(plan, index):
     print('Press enter to edit and escape to exit')
 
     
-def print_page(page, data):
+def print_page(page, data, index=None):
     print(f'Page {page}')
     print('=' * 20)
     for i in range(page * 5, min((page + 1) * 5, len(data))):
-        print(f'{i}: {data[i][1]}')
+        if i == index:
+            print(f'\033[1m{i}: {data[i][1]} <\033[0m')
+        else:
+            print(f'{i}: {data[i][1]}')
     print('=' * 20)
     print('(n: next page | p: previous page | q: quit)')
        
 if __name__ == '__main__':
-    plan('monday')
-    show('monday')
+    meal_viewer()

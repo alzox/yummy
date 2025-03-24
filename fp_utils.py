@@ -25,6 +25,11 @@ def pressed_up_arrow(key):
 def pressed_down_arrow(key):
     return key == b'P'
 
+def index_page(page, index):
+    if page == 0:
+        return index
+    else:
+        return page * 5 + index % 5
        
     
 # --- PRESENTATION FUNCTIONS ---
@@ -36,13 +41,13 @@ def print_plan(plans = None, index = 0, weekday = None):
     if plans is None:
         for i in range(3):
             if i == index:
-                print(f'\033[1m{str.title(MEALS[i])}: Not Planned\033[0m')
+                print(f'\033[1m{str.title(MEALS[i])}: Not Planned < \033[0m')
             else:
                 print(f'{str.title(MEALS[i])}: Not Planned')    
     else:
         for i, plan in enumerate(plans):
             if i == index:
-                print(f'\033[1m{str.title(MEALS[i])}: {plan}\033[0m')
+                print(f'\033[1m{str.title(MEALS[i])}: {plan} < \033[0m')
             else:
                 print(f'{str.title(MEALS[i])}: {plan}')
     

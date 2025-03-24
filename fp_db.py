@@ -44,8 +44,24 @@ def insert_meal(meal):
             raise
     finally:
         conn.close()
+        
+def edit_meal(meal_id, meal):
+    conn = sqlite3.connect(file)
+    c = conn.cursor()
+    c.execute("UPDATE Meals SET meal_name=? WHERE meal_id=?", (meal, meal_id))
+    conn.commit()
+    conn.close()
     
-"""Find Functions"""
+"""Delete Functions"""
+
+def delete_meal(meal_id):
+    conn = sqlite3.connect(file)
+    c = conn.cursor()
+    c.execute("DELETE FROM Meals WHERE meal_id=?", (meal_id,))
+    conn.commit()
+    conn.close()
+    
+"""Find Functions"""   
 
 FIRST_ELEMENT = 0
 
