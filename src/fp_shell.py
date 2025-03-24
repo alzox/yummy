@@ -1,6 +1,6 @@
 import cmd, sys, os, re
-from fp_funcs import * 
-from fp_utils import is_valid_weekday, recursive_listdir
+from .fp_funcs import * 
+from .fp_utils import is_valid_weekday, recursive_listdir
 
 class FPShell(cmd.Cmd):
     intro = '\nWelcome to the yummy food planning cli :)!\nType help or ? to list commands.\n'

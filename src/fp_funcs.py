@@ -4,8 +4,8 @@ import os
 
 from msvcrt import getch
 
-import fp_db as db
-from fp_utils import (
+from . import fp_db as db
+from .fp_utils import (
     MEALS, WEEKDAYS_LOWER, 
     pressed_arrow_key, pressed_up_arrow, pressed_down_arrow,
     clear_terminal, weekday_to_index, index_page,
