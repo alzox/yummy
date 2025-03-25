@@ -315,11 +315,11 @@ class DBViewer:
                     key = getch()
                     if pressed_up_arrow(key):
                         if self.index == 0:
-                            self.index = 4
+                            self.index = min(4, (len(DATA)%5)-1)
                         else:
                             self.index -= 1
                     elif pressed_down_arrow(key):
-                        if self.index == 4:
+                        if self.index == 4 or self.index == (len(DATA)%5)-1:
                             self.index = 0
                         else:
                             self.index += 1

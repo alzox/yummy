@@ -47,15 +47,9 @@ UI FLOW AND NOTES ABOUT PRINTS
 refactor all help strings to be more informative
 
 db:
-index can go beyond what exists for the current page
-    * this can cause index out of range
 edit statement should be edit name:
 
-export:
-autocomplete could be a bit better
-
 grocery:
-index can go beyond what exists for the current page
 edit statement should be edit name
 edit prints for the planner page
 
