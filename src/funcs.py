@@ -5,15 +5,15 @@ import os
 from msvcrt import getch
 
 try:
-    from . import yummy_db as db
-    from .yummy_utils import (
+    from . import db as db
+    from .utils import (
         MEALS, WEEKDAYS_LOWER, 
         pressed_arrow_key, pressed_up_arrow, pressed_down_arrow,
         clear_terminal, weekday_to_index, index_page,
         print_plan, print_meals, print_page_groceries, print_page_meals)
 except ImportError:
-    import src.yummy_db as db
-    from src.yummy_utils import (
+    import src.db as db
+    from src.utils import (
         MEALS, WEEKDAYS_LOWER, 
         pressed_arrow_key, pressed_up_arrow, pressed_down_arrow,
         clear_terminal, weekday_to_index, index_page,

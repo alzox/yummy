@@ -1,1 +1,1 @@
-from .yummy_cli import Yummy
+from .cli import Yummy

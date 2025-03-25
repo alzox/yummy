@@ -1,9 +1,7 @@
-#!/usr/bin/env python3
-
 import sqlite3
 import os
 
-file = "food.db"
+file = "yummy.db"
 
 if os.path.exists(file):
     os.remove(file)

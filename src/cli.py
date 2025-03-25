@@ -1,7 +1,7 @@
 import cmd, re
 
-from .yummy_funcs import * 
-from .yummy_utils import is_valid_weekday, recursive_listdir
+from .funcs import * 
+from .utils import is_valid_weekday, recursive_listdir
 
 class Yummy(cmd.Cmd):
     intro = '\nWelcome to the yummy (meal planning) cli :)!\nType help or ? to list commands.\n'
