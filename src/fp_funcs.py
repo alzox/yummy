@@ -106,7 +106,7 @@ def grocery():
     actions = {
         b'\r': lambda: (DBViewer(db, 'grocery', match=grocery_actions, print_func=print_page_groceries).view())
     }
-    viewer = DBViewer(db, 'meals', match=actions)
+    viewer = DBViewer(db, 'planner', match=actions)
     viewer.view()
            
 def import_json(file):
@@ -187,6 +187,8 @@ class DBViewer:
         match self.data_source:
             case 'meals':
                 DATA = self.db.get_meals()
+            case 'planner':
+                DATA = self.db.get_planner_meals()
                 SELECTION = None
                 SELECTION_NAME = None
             case 'grocery':
