@@ -1,4 +1,5 @@
-import cmd, sys, os, re
+import cmd, re
+
 from .yummy_funcs import * 
 from .yummy_utils import is_valid_weekday, recursive_listdir
 
