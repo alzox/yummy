@@ -158,34 +158,13 @@ def export_json():
 """ Refactor These Soon, But They Are View Functions """ 
 def meal_select():
     'Page through existing recipes'
-    data = db.get_meals()
-    page = 0
-    digit_buffer = ''
-    while True:
-        if page < 0:
-            page = 0
-            
-        clear_terminal()
-        print_page(page, data)
-        print(f'\nEnter meal #: {digit_buffer}', end='')
-        
-        key = getch()
-        
-        match key:
-            case b'n':
-                page += 1
-            case b'p':
-                page -= 1
-            case b'q':
-                return None
-            case b'\x08':
-                digit_buffer = digit_buffer[:-1]
-            case b'\r':
-                return data[int(digit_buffer)][1]
-            case _ if key.isdigit():
-                digit_buffer += key.decode('utf-8')
-            case _:
-                pass
+    global DATA_INDEX
+    global DATA
+    # case b'\r':
+    #             return data[int(digit_buffer)][1]
+    viewer = DBViewer(db, 'meals')
+    viewer.view()
+    return DATA[DATA_INDEX][1]
 
 DATA_INDEX = 0
 SELECTION = None
@@ -222,6 +201,8 @@ class DBViewer:
         if self.match is not None:
             if key in self.match:
                 self.match[key]()
+                return True
+        return False
     
     def view(self):
         'View all meals'
@@ -240,7 +221,8 @@ class DBViewer:
 
             key = getch()
             
-            self.run_match(key)
+            if self.run_match(key):
+                continue
 
             match key:
                 case b'\xe0':
@@ -263,7 +245,9 @@ class DBViewer:
                     self.page -= 1
                 case b'q':
                     return
+                case b'\r':
+                    return
                 case _:
                     pass
 if __name__ == '__main__':
-    grocery()
+    plan('monday')
