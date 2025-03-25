@@ -55,10 +55,11 @@ class Yummy(cmd.Cmd):
         
     def do_import(self, arg=None):
         'Import a meal plan or grocery list into sqlite: IMPORT file'
-        if len(arg) == 0:
+        args = parse(arg)
+        if len(args) == 0:
             print('No file specified\n')
             return
-        if len(arg) > 1:
+        if len(args) > 1:
             print('Too many arguments\n')
             return
         if re.search('.json', arg):
