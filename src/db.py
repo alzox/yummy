@@ -163,7 +163,7 @@ def export_groceries():
     conn = sqlite3.connect(FILE)
     c = conn.cursor()
     # Left Join to get the meal name for all meal ids
-    c.execute("SELECT Meals.meal_name, Groceries.grocery_name, Groceries.grocery_qty FROM Groceries LEFT JOIN Meals ON Groceries.meal_id = Meals.meal_id")
+    c.execute("SELECT Meals.meal_id, Meals.meal_name, Groceries.grocery_name, Groceries.grocery_qty FROM Groceries LEFT JOIN Meals ON Groceries.meal_id = Meals.meal_id")
     groceries = c.fetchall()
     conn.close()
     return groceries

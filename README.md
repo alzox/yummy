@@ -8,8 +8,8 @@ yummy is a personal meal planning and grocery management tool designed to simpli
 - Manage a database of meals and groceries.
 - Export and import plans and groceries in JSON or CSV formats.
 - Interactive CLI for meal planning and database management.
-- Web-based interface with dynamic updates using JavaScript.
-- Persistent storage using SQLite.
+- Web-based interface to track plan hosted on Github Pages.
+- Persistent local storage using SQLite.
 
 ## Requirements
 
@@ -30,14 +30,8 @@ python3 yummy.py
 
 - Add os.cwd() to PATH if you want to run it from anywhere
 - Open/Install liveserver to see planner site after exports
-- 
 
 ## Personal To-dos
 
 - add platform dependent imports for getch
 - review DBViewer logic and globals
-
-
-import:
-error handling for mischema'd json files
-fix export and import dependence

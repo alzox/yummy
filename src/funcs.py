@@ -124,10 +124,14 @@ def grocery():
 
 # --- IMPORT/EXPORT FUNCTIONS ---
 #! is there a way to auto gen schemas so there doesn't need to be duplicate code?
-
+#! no practical benefit to different export formats, grocery is csv, plans is json
 def import_json(file): #* the file should be in the format: meals, plans
     'Import meals from JSON:  IMPORT_JSON file'
     data = json.load(open(file))
+    
+    if 'meals' not in data or 'plans' not in data:
+        print('Invalid JSON format\n')
+        return
     
     for meal_obj in data['meals']:
         db.insert_meal(meal_obj['name'])
@@ -144,6 +148,10 @@ def import_json(file): #* the file should be in the format: meals, plans
 def import_json_url(url):
     'Import meals from JSON:  IMPORT_JSON_URL url'
     data = requests.get(url).json()
+    
+    if 'meals' not in data or 'plans' not in data:
+        print('Invalid JSON format\n')
+        return
     
     for meal_obj in data['meals']:
         db.insert_meal(meal_obj['name'])
@@ -190,13 +198,14 @@ def export_plans(extension='json'):
     else:
         print('Invalid extension\n')
   
-def import_csv(file): #* the file should be in the format: meal_id, name, quantity
+def import_csv(file): #* the file should be in the format: meal_id, meal_name, name, quantity
     'Import groceries from CSV:  IMPORT_CSV file'
     with open(file, 'r') as f:
         lines = f.readlines()
         for line in lines:
             line = line.split(',')
-            db.insert_grocery(line[0], line[1], line[2])
+            db.insert_meal(line[1])
+            db.insert_grocery(line[0], line[2], line[3])
     print('Groceries imported from CSV\n')
 
 def import_csv_url(url):
@@ -204,6 +213,7 @@ def import_csv_url(url):
     data = requests.get(url).text.split('\n')
     for line in data:
         line = line.split(',')
+        db.insert_meal(line[1])
         db.insert_grocery(line[0], line[1], line[2])
     print('Groceries imported from CSV\n')
     
@@ -213,14 +223,14 @@ def export_grocery_csv():
     groceries = db.export_groceries()
     with open(os.path.join(DOCS_PATH, 'grocery.csv'), 'w') as f:
         for grocery in groceries:
-            f.write(f'{grocery[0]},{grocery[1]},{grocery[2]}')
+            f.write(f'{grocery[0]},{grocery[1]},{grocery[2]},{grocery[3]}\n')
     print('Groceries exported to docs/grocery.csv\n')
     
 def export_grocery_json():
     'Export groceries to JSON'
     print('Exporting groceries to JSON')
     groceries = db.export_groceries()
-    groceries_arr = [{'meal_id': grocery[0], 'name': grocery[1], 'quantity': grocery[2]} for grocery in groceries]
+    groceries_arr = [{'meal_id': grocery[0], 'meal_name': grocery[1], 'name': grocery[2], 'quantity': grocery[3]} for grocery in groceries]
     with open(os.path.join(DOCS_PATH, 'grocery.json'), 'w') as f:
         json.dump(groceries_arr, f)
     print('Groceries exported to docs/groceries.json\n')
