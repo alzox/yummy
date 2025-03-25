@@ -225,7 +225,7 @@
     .then(data => {
         let days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
         let meals = ['breakfast', 'lunch', 'dinner'];
-        data.forEach(dayPlan => {
+        data["plans"].forEach(dayPlan => {
             let day = dayPlan.weekday.toLowerCase();
             if (days.includes(day)) {
                 let weekday = document.getElementById(day);

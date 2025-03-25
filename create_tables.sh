@@ -20,6 +20,7 @@ cur = conn.cursor()
 cur.execute('DROP TABLE IF EXISTS Weekdays')
 cur.execute('DROP TABLE IF EXISTS Meals')
 cur.execute('DROP TABLE IF EXISTS Plans')
+cur.execute('DROP TABLE IF EXISTS Groceries')
 
 # Create Weekdays table
 cur.execute('''
@@ -49,6 +50,17 @@ CREATE TABLE IF NOT EXISTS Plans (
     FOREIGN KEY (breakfast_id) REFERENCES Meals(meal_id),
     FOREIGN KEY (lunch_id) REFERENCES Meals(meal_id),
     FOREIGN KEY (dinner_id) REFERENCES Meals(meal_id)
+)
+''')
+
+# Create Groceries table
+cur.execute('''
+CREATE TABLE IF NOT EXISTS Groceries (
+    grocery_id INTEGER PRIMARY KEY,
+    grocery_name TEXT NOT NULL UNIQUE,
+    grocery_qty INTEGER NOT NULL,
+    meal_id INTEGER,
+    FOREIGN KEY (meal_id) REFERENCES Meals(meal_id)
 )
 ''')
 

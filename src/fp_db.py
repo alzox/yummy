@@ -45,10 +45,25 @@ def insert_meal(meal):
     finally:
         conn.close()
         
+        
 def edit_meal(meal_id, meal):
     conn = sqlite3.connect(file)
     c = conn.cursor()
     c.execute("UPDATE Meals SET meal_name=? WHERE meal_id=?", (meal, meal_id))
+    conn.commit()
+    conn.close()
+    
+def insert_grocery(meal_id, grocery, quantity):
+    conn = sqlite3.connect(file)
+    c = conn.cursor()
+    c.execute("INSERT INTO Groceries (meal_id, grocery_name, grocery_qty) VALUES (?,?,?)", (meal_id, grocery, quantity))
+    conn.commit()
+    conn.close()
+    
+def edit_grocery(grocery_id, grocery, quantity):
+    conn = sqlite3.connect(file)
+    c = conn.cursor()
+    c.execute("UPDATE Groceries SET grocery_name=?, grocery_qty=? WHERE grocery_id=?", (grocery, quantity, grocery_id))
     conn.commit()
     conn.close()
     
@@ -58,6 +73,13 @@ def delete_meal(meal_id):
     conn = sqlite3.connect(file)
     c = conn.cursor()
     c.execute("DELETE FROM Meals WHERE meal_id=?", (meal_id,))
+    conn.commit()
+    conn.close()
+    
+def delete_grocery(grocery_id):
+    conn = sqlite3.connect(file)
+    c = conn.cursor()
+    c.execute("DELETE FROM Groceries WHERE grocery_id=?", (grocery_id,))
     conn.commit()
     conn.close()
     
@@ -72,6 +94,22 @@ def get_meals():
     meals = c.fetchall()
     conn.close()
     return meals
+
+def get_planner_meals():
+    conn = sqlite3.connect(file)
+    c = conn.cursor()
+    c.execute("SELECT * FROM Meals WHERE meal_id IN (SELECT breakfast_id FROM Plans UNION SELECT lunch_id FROM Plans UNION SELECT dinner_id FROM Plans)")
+    meals = c.fetchall()
+    conn.close()
+    return meals
+
+def get_groceries(meal_id):
+    conn = sqlite3.connect(file)
+    c = conn.cursor()
+    c.execute("SELECT * FROM Groceries WHERE meal_id=?", (meal_id,))
+    groceries = c.fetchall()
+    conn.close()
+    return groceries
     
 def find_mealid(meal):
     conn = sqlite3.connect(file)

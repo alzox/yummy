@@ -4,12 +4,28 @@ import os
 
 from msvcrt import getch
 
-from . import fp_db as db
-from .fp_utils import (
-    MEALS, WEEKDAYS_LOWER, 
-    pressed_arrow_key, pressed_up_arrow, pressed_down_arrow,
-    clear_terminal, weekday_to_index, index_page,
-    print_plan, print_meals) #! why two print_plan functions?
+try:
+    from . import fp_db as db
+    from .fp_utils import (
+        MEALS, WEEKDAYS_LOWER, 
+        pressed_arrow_key, pressed_up_arrow, pressed_down_arrow,
+        clear_terminal, weekday_to_index, index_page,
+        print_plan, print_meals, print_page_groceries, print_page_meals)
+except ImportError:
+    import fp_db as db
+    from fp_utils import (
+        MEALS, WEEKDAYS_LOWER, 
+        pressed_arrow_key, pressed_up_arrow, pressed_down_arrow,
+        clear_terminal, weekday_to_index, index_page,
+        print_plan, print_meals, print_page_groceries, print_page_meals)
+
+# --- PATHS ---
+
+JSON_PATH = os.getcwd() + '/docs/plans.json'
+GROCERY_PATH = os.getcwd() + '/docs/grocery.csv'
+
+
+# --- FUNCTIONS ---
 
 def plan(weekday):
     'Plan a day:  PLAN day_of_week'
@@ -60,36 +76,39 @@ def show(weekday='all'):
     print('\n')
     
 def db_meals():
-    'Show and edite the current meals:  DB_MEALS'
-    db_viewer()
+    'Show and edit the current meals:  DB_MEALS'
+    actions = {
+        b'\r': lambda: db.edit_meal(
+            DATA[DATA_INDEX][0], 
+            input(f'Edit {DATA[DATA_INDEX][1]}: ')
+        ),
+        b'd': lambda: db.delete_meal(DATA[DATA_INDEX][0]),
+        b'a': lambda: db.insert_meal(input('Add meal: '))
+    }
+
+    viewer = DBViewer(db, 'meals', match=actions)
+    viewer.view()
     
     
 def grocery():
-    "Add ingredients to grocery list:  GROCERY"
-    print('Adding ingredients to grocery list')
-    GROCERY_PATH = r"C:\Users\commo\OneDrive - University of Virginia\School\STEM\CS\Coding Projects 2025\Food-Planner\docs\grocery.csv"
-    setup_grocery()
-    while True:
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print_grocery()
-        ingredient = input('Enter ingredient: ').title()
-        if ingredient == 'exit':
-            break
-        quantity = input('Enter quantity: ')
-        if quantity == 'exit':
-            break
-        with open(GROCERY_PATH, 'a') as f:
-            f.write(f'{ingredient},{quantity}\n')
-            f.close()
+    'View all meals and edit their groceries status:  GROCERY'
+    grocery_actions = {
+        b'\r': lambda: db.edit_grocery(
+            DATA[DATA_INDEX][0],
+            input(f'Edit {DATA[DATA_INDEX][1]} Name: '),
+            input(f'Edit {DATA[DATA_INDEX][1]} Quantity: ')),
+        b'd': lambda: db.delete_grocery(DATA[DATA_INDEX][0]),
+        b'a': lambda: db.insert_grocery(SELECTION, input('Add grocery: '), input('Add quantity: '))
+    }
+    
+    
         
-def setup_grocery():
-    'Setup grocery list:  SETUP_GROCERY'
-    GROCERY_PATH = r"C:\Users\commo\OneDrive - University of Virginia\School\STEM\CS\Coding Projects 2025\Food-Planner\docs\grocery.csv"
-    with open(GROCERY_PATH, 'w') as f:
-        print('Grocery list setup')
-        f.close()
-    return
-
+    actions = {
+        b'\r': lambda: (DBViewer(db, 'grocery', match=grocery_actions, print_func=print_page_groceries).view())
+    }
+    viewer = DBViewer(db, 'meals', match=actions)
+    viewer.view()
+           
 def import_json(file):
     'Import meals from JSON:  IMPORT_JSON file'
     data = json.load(open(file))
@@ -122,12 +141,8 @@ def import_json_url(url):
     
     print('Import complete\n')
     
-    
-    
- 
 def export_json():
     'Export plans to JSON'
-    JSON_PATH=r"C:\Users\commo\OneDrive - University of Virginia\School\STEM\CS\alzox\yummy\docs\plans.json"
     print('Exporting plans to JSON')
 
     plans = db.export_plans()
@@ -139,8 +154,8 @@ def export_json():
     with open(JSON_PATH, 'w') as f:
         json.dump(json_dict, f)
     print('Plans exported to docs/plans.json\n')
-    
-"""Helper Functions"""
+   
+""" Refactor These Soon, But They Are View Functions """ 
 def meal_select():
     'Page through existing recipes'
     data = db.get_meals()
@@ -172,102 +187,83 @@ def meal_select():
             case _:
                 pass
 
-def db_viewer():
-    'View all meals'
-    
-    index = 0 
-    page = 0
-    while True:
-        if page < 0:
-            page = 0
-        data = db.get_meals()
-        data_index = index_page(page, index)
-         
-        clear_terminal()
-        print_page(page, data, data_index)
-        print('(enter: edit | d: delete | a: add)\n')
+DATA_INDEX = 0
+SELECTION = None
+SELECTION_NAME = None
+DATA = None
+class DBViewer:
+    def __init__(self, db, data_source, match=None, print_func=print_page_meals):
+        self.db = db 
+        self.index = 0
+        self.page = 0
+        self.data_source = data_source
+        self.match = match
+        self.print_func = print_func
         
-        key = getch()
-        
-        match key:
-            case b'\xe0':
-                key = getch()
-                if pressed_up_arrow(key):
-                    if index == 0:
-                        index = 4
-                    else:
-                        index -= 1
-                elif pressed_down_arrow(key):
-                    if index == 4:
-                        index = 0
-                    else:
-                        index += 1
-            case b'\r':
-                meal = input(f'Edit {data[data_index][1]}: ')
-                if meal is None:
-                    continue
-                else:
-                    db.edit_meal(data[data_index][0], meal)  
-                    continue 
-            case b'd':
-                db.delete_meal(data[data_index][0])
-                continue
-            case b'a':
-                db.insert_meal(input('Add meal: '))
-                continue
-
-        match key:
-            case b'n':
-                page += 1
-            case b'p':
-                page -= 1
-            case b'q':
-                return
+    def set_data(self):
+        global DATA
+        global DATA_INDEX
+        global SELECTION
+        global SELECTION_NAME
+        match self.data_source:
+            case 'meals':
+                DATA = self.db.get_meals()
+                SELECTION = None
+                SELECTION_NAME = None
+            case 'grocery':
+                if SELECTION is None:
+                    SELECTION = DATA[DATA_INDEX][0]
+                    SELECTION_NAME = DATA[DATA_INDEX][1]
+                DATA = self.db.get_groceries(SELECTION)
             case _:
                 pass
+    
+    def run_match(self, key):
+        if self.match is not None:
+            if key in self.match:
+                self.match[key]()
+    
+    def view(self):
+        'View all meals'
+        global DATA_INDEX
+        global DATA
+        global SELECTION
+        global SELECTION_NAME
+        while True:
+            if self.page < 0:
+                self.page = 0
+            self.set_data()
+            DATA_INDEX = index_page(self.page, self.index)
+
+            clear_terminal()
+            self.print_func(self.page, DATA, DATA_INDEX, SELECTION_NAME)
+
+            key = getch()
             
-"""Helper Print Functions"""
-def print_grocery():
-    GROCERY_PATH = r"C:\Users\commo\OneDrive - University of Virginia\School\STEM\CS\Coding Projects 2025\Food-Planner\docs\grocery.csv"
-    print('=' * 20)
-    print('Grocery List')
-    with open(GROCERY_PATH, 'r') as f:
-        for line in f.readlines():
-            data = line.strip().split(',')
-            print(f'{data[1]}x: {data[0]}')
-    print('=' * 20)
-    print('Type "exit" to exit')
+            self.run_match(key)
 
-def print_plan_option():
-    print('\n') 
-    print('=' * 20)
-    print('"suggest" for recipe suggestions')
-    print('"select" to select from existing recipes')
-    print('"exit" to exit planning')
-    
-def print_edit(plan, index):
-    print('=' * 20)
-    for i in range(3):
-        if i == index:
-            print(f'{meals[i].title()}: {db.find_meal(plan[i + 2])} <')
-        else:
-            print(f'{meals[i].title()}: {db.find_meal(plan[i + 2])}')
-    print('=' * 20)
-    print('Select meal to edit')
-    print('Use up and down arrows to navigate')
-    print('Press enter to edit and escape to exit')
-
-    
-def print_page(page, data, index=None):
-    print(f'Page {page}')
-    print('=' * 20)
-    for i in range(page * 5, min((page + 1) * 5, len(data))):
-        if i == index:
-            print(f'\033[1m{i}: {data[i][1]} <\033[0m')
-        else:
-            print(f'{i}: {data[i][1]}')
-    print('=' * 20)
-    print('(n: next page | p: previous page | q: quit)')
-       
+            match key:
+                case b'\xe0':
+                    key = getch()
+                    if pressed_up_arrow(key):
+                        if self.index == 0:
+                            self.index = 4
+                        else:
+                            self.index -= 1
+                    elif pressed_down_arrow(key):
+                        if self.index == 4:
+                            self.index = 0
+                        else:
+                            self.index += 1
+                
+            match key:
+                case b'n':
+                    self.page += 1
+                case b'p':
+                    self.page -= 1
+                case b'q':
+                    return
+                case _:
+                    pass
 if __name__ == '__main__':
-   import_json_url("https://raw.githubusercontent.com/alzox/yummy/refs/heads/master/docs/plans.json") 
+    grocery()
