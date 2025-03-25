@@ -118,3 +118,15 @@ def print_page_select(page, data, index=None, *args):
     print('=' * 20)
     print('(n: next page | p: previous page | q: quit)')
     print('(enter: select meal)\n')
+    
+def print_page_select_groceries(page, data, index=None, *args):
+    print(f'Page {page} of Planned Meals')
+    print('=' * 20)
+    for i in range(page * 5, min((page + 1) * 5, len(data))):
+        if i == index:
+            print(f'\033[1m{i}: {data[i][1]} <\033[0m')
+        else:
+            print(f'{i}: {data[i][1]}')
+    print('=' * 20)
+    print('(n: next page | p: previous page | q: quit)')
+    print('(enter: select meal to edit groceries)\n')

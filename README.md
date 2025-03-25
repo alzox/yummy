@@ -35,23 +35,8 @@ python3 yummy.py
 ## Personal To-dos
 
 - add platform dependent imports for getch
-- YOU NEED TO REFACTOR
-- more stylistic prints
-- review ui flow
-- review set-up and run scripts
-- review db location?
-- review directory structure for scripts and resources
+- review DBViewer logic and globals
 
-UI FLOW AND NOTES ABOUT PRINTS
-
-refactor all help strings to be more informative
-
-db:
-edit statement should be edit name:
-
-grocery:
-edit statement should be edit name
-edit prints for the planner page
 
 import:
 error handling for mischema'd json files

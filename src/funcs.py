@@ -17,7 +17,7 @@ except ImportError:
         MEALS, WEEKDAYS_LOWER, 
         pressed_arrow_key, pressed_up_arrow, pressed_down_arrow,
         clear_terminal, weekday_to_index, index_page,
-        print_plan, print_meals, print_page_groceries, print_page_meals)
+        print_plan, print_meals, print_page_groceries, print_page_meals, print_page_select_groceries)
 
 # --- PATHS ---
 
@@ -96,7 +96,7 @@ def db_meals():
     actions = {
         b'\r': lambda: db.edit_meal(
             DATA[DATA_INDEX][0], 
-            input(f'Edit {DATA[DATA_INDEX][1]}: ')
+            input(f'Edit Name: ')
         ),
         b'd': lambda: db.delete_meal(DATA[DATA_INDEX][0]),
         b'a': lambda: db.insert_meal(input('Add meal: '))
@@ -110,16 +110,14 @@ def grocery():
     grocery_actions = {
         b'\r': lambda: db.edit_grocery(
             DATA[DATA_INDEX][0],
-            input(f'Edit {DATA[DATA_INDEX][1]} Name: '),
-            input(f'Edit {DATA[DATA_INDEX][1]} Quantity: ')),
+            input(f'Edit Name: '),
+            input(f'Edit Quantity: ')),
         b'd': lambda: db.delete_grocery(DATA[DATA_INDEX][0]),
         b'a': lambda: db.insert_grocery(SELECTION, input('Add grocery: '), input('Add quantity: '))
     }
     
-    
-        
     actions = {
-        b'\r': lambda: (DBViewer(db, 'grocery', match=grocery_actions, print_func=print_page_groceries).view())
+        b'\r': lambda: (DBViewer(db, 'grocery', match=grocery_actions, print_func=print_page_select_groceries).view())
     }
     viewer = DBViewer(db, 'planner', match=actions)
     viewer.view()
