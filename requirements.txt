@@ -1,2 +1,2 @@
 pyreadline3
-sqlite3
+requests

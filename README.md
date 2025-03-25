@@ -19,7 +19,7 @@ pip install -t requirements.txt
 
 - Python 3.x
 - pyreadline3
-- sqlite3
+- requests
 
 ## Usage
 
@@ -33,5 +33,4 @@ python3 yummy.py
 
 ## Personal To-dos
 
-- add platform dependent imports for getch
-- review DBViewer logic and globals
+- Make it work on linux

@@ -1,23 +1,42 @@
+import os
+import platform
+
 import json
 import requests
-import os
 
-from msvcrt import getch
+if platform.system() == "Windows":
+    from msvcrt import getch
+
+if platform.system() == "Linux":
+    import sys
+    import tty
+    import termios
+
+    def getch():
+        fd = sys.stdin.fileno()
+        old_settings = termios.tcgetattr(fd)
+        try:
+            tty.setraw(fd)
+            ch = sys.stdin.read(3)
+            ch = ch.encode('utf-8')
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+        return ch
 
 try:
-    from . import db as db
-    from .utils import (
-        MEALS, WEEKDAYS_LOWER, 
-        pressed_arrow_key, pressed_up_arrow, pressed_down_arrow,
-        clear_terminal, weekday_to_index, index_page,
-        print_plan, print_meals, print_page_groceries, print_page_meals)
-except ImportError:
     import src.db as db
     from src.utils import (
-        MEALS, WEEKDAYS_LOWER, 
-        pressed_arrow_key, pressed_up_arrow, pressed_down_arrow,
+        MEALS, WEEKDAYS_LOWER,
+        pressed_up_arrow, pressed_down_arrow,
         clear_terminal, weekday_to_index, index_page,
-        print_plan, print_meals, print_page_groceries, print_page_meals, print_page_select_groceries)
+        print_plan, print_meals, print_page_meals)
+except ImportError:
+    import db
+    from utils import (
+        MEALS, WEEKDAYS_LOWER,
+        pressed_up_arrow, pressed_down_arrow,
+        clear_terminal, weekday_to_index, index_page,
+        print_plan, print_meals, print_page_meals, print_page_select_groceries)
 
 # --- PATHS ---
 
@@ -33,11 +52,12 @@ def plan(weekday):
         db_plan = db.find_plan_print(weekday_to_index(weekday))
         clear_terminal()
         print_plan(db_plan, index, weekday)
-        
+
         key = getch()
-        
+
         match key:
             case b'\xe0':
+            # case b'x1b':
                 key = getch()
                 if pressed_up_arrow(key):
                     if index == 0:
@@ -49,20 +69,20 @@ def plan(weekday):
                         index = 0
                     else:
                         index += 1
-            case b'q': 
+            case b'q':
                 return
             case b'\r':
                 meal = input(f'What\'s for {MEALS[index]}? ("idk" to use db): ')
-                
+
                 if meal == 'idk':
                     meal = meal_select()
-                
+
                 if meal is None:
                     continue
-                else:
-                    db.insert_meal(meal)
-                    db.edit_plan(weekday_to_index(weekday), MEALS[index], db.find_mealid(meal))
-                    continue 
+
+                db.insert_meal(meal)
+                db.edit_plan(weekday_to_index(weekday), MEALS[index], db.find_mealid(meal))
+                continue
 
 def show(weekday='all'):
     'Show the current plan:  SHOW'
@@ -75,14 +95,14 @@ def show(weekday='all'):
         plan = db.find_plan_print(weekday_to_index(weekday))
         print_meals(weekday, plan)
     print('\n')
-   
+
 def summary():
     'Show a summary of the database:  DB_SUMMARY'
     meals, plans, groceries = db.summary()
     print(f'Meals Table Summary: Rows: {len(meals)}, Columns: 2')
     print(f'Plans Table Summary: Rows: {len(plans)}, Columns: 4')
     print(f'Groceries Table Summary: Rows: {len(groceries)}, Columns: 3')
-    
+
     meals_planned = 0
     for plan in plans: 
         if plan[2] is not None:
@@ -91,10 +111,10 @@ def summary():
             meals_planned += 1
         if plan[4] is not None:
             meals_planned += 1
-            
+
     print(f'Meals Planned: {meals_planned}/21!\n')
-    
- 
+
+
 def meals():
     'Show and edit the current meals:  DB_MEALS'
     actions = {
@@ -108,7 +128,7 @@ def meals():
 
     viewer = DBViewer(db, 'meals', match=actions)
     viewer.view()
-     
+
 def grocery():
     'View all meals and edit their groceries status:  GROCERY'
     grocery_actions = {
@@ -119,7 +139,7 @@ def grocery():
         b'd': lambda: db.delete_grocery(DATA[DATA_INDEX][0]),
         b'a': lambda: db.insert_grocery(SELECTION, input('Add grocery: '), input('Add quantity: '))
     }
-    
+
     actions = {
         b'\r': lambda: (DBViewer(db, 'grocery', match=grocery_actions, print_func=print_page_select_groceries).view())
     }
@@ -132,43 +152,43 @@ def grocery():
 def import_json(file): #* the file should be in the format: meals, plans
     'Import meals from JSON:  IMPORT_JSON file'
     data = json.load(open(file))
-    
+
     if 'meals' not in data or 'plans' not in data:
         print('Invalid JSON format\n')
         return
-    
+
     for meal_obj in data['meals']:
         db.insert_meal(meal_obj['name'])
     print('Meals imported from JSON')
-    
+
     for plan_obj in data['plans']:
         db.edit_plan(weekday_to_index(plan_obj['weekday']), 'breakfast', plan_obj['breakfast'])
         db.edit_plan(weekday_to_index(plan_obj['weekday']), 'lunch', plan_obj['lunch'])
         db.edit_plan(weekday_to_index(plan_obj['weekday']), 'dinner', plan_obj['dinner'])
     print('Plans imported from JSON')
-    
+
     print('Import complete\n')
-    
+
 def import_json_url(url):
     'Import meals from JSON:  IMPORT_JSON_URL url'
     data = requests.get(url).json()
-    
+
     if 'meals' not in data or 'plans' not in data:
         print('Invalid JSON format\n')
         return
-    
+
     for meal_obj in data['meals']:
         db.insert_meal(meal_obj['name'])
     print('Meals imported from JSON')
-    
+
     for plan_obj in data['plans']:
         db.edit_plan(weekday_to_index(plan_obj['weekday']), 'breakfast', plan_obj['breakfast'])
         db.edit_plan(weekday_to_index(plan_obj['weekday']), 'lunch', plan_obj['lunch'])
         db.edit_plan(weekday_to_index(plan_obj['weekday']), 'dinner', plan_obj['dinner'])
     print('Plans imported from JSON')
-    
+
     print('Import complete\n')
-    
+
 def export_plans_json():
     'Export plans to JSON'
     print('Exporting plans to JSON')
@@ -182,7 +202,7 @@ def export_plans_json():
     with open(os.path.join(DOCS_PATH, 'plans.json'), 'w') as f:
         json.dump(json_dict, f)
     print('Plans exported to docs/plans.json\n')
-    
+
 def export_plans_csv():
     'Export plans to CSV'
     print('Exporting plans to CSV')
@@ -192,7 +212,7 @@ def export_plans_csv():
         for plan in plans:
             f.write(f'{plan[0]},{plan[1]},{plan[2]},{plan[3]}\n')
     print('Plans exported to docs/plans.csv\n')
-    
+
 def export_plans(extension='json'):
     'Export plans to CSV or JSON:  EXPORT_PLANS [csv|json]'
     if extension == 'csv':
@@ -201,7 +221,7 @@ def export_plans(extension='json'):
         export_plans_json()
     else:
         print('Invalid extension\n')
-  
+
 def import_csv(file): #* the file should be in the format: meal_id, meal_name, name, quantity
     'Import groceries from CSV:  IMPORT_CSV file'
     with open(file, 'r') as f:
@@ -220,7 +240,7 @@ def import_csv_url(url):
         db.insert_meal(line[1])
         db.insert_grocery(line[0], line[1], line[2])
     print('Groceries imported from CSV\n')
-    
+
 def export_grocery_csv():
     'Export groceries to CSV'
     print('Exporting groceries to CSV')
@@ -229,7 +249,7 @@ def export_grocery_csv():
         for grocery in groceries:
             f.write(f'{grocery[0]},{grocery[1]},{grocery[2]},{grocery[3]}\n')
     print('Groceries exported to docs/grocery.csv\n')
-    
+
 def export_grocery_json():
     'Export groceries to JSON'
     print('Exporting groceries to JSON')
@@ -238,7 +258,7 @@ def export_grocery_json():
     with open(os.path.join(DOCS_PATH, 'grocery.json'), 'w') as f:
         json.dump(groceries_arr, f)
     print('Groceries exported to docs/groceries.json\n')
-    
+
 def export_grocery(extension='csv'):
     'Export groceries to CSV or JSON:  EXPORT_GROCERY [csv|json]'
     print(extension)
@@ -248,8 +268,8 @@ def export_grocery(extension='csv'):
         export_grocery_json()
     else:
         print('Invalid extension\n')
-   
- 
+
+
 # --- DBVIEWER CLASS -- 
 
 def meal_select():
@@ -274,7 +294,7 @@ class DBViewer:
         self.data_source = data_source
         self.match = match
         self.print_func = print_func
-        
+
     def set_data(self):
         global DATA
         global DATA_INDEX
@@ -294,14 +314,14 @@ class DBViewer:
                 DATA = self.db.get_groceries(SELECTION)
             case _:
                 pass
-    
+
     def run_match(self, key):
         if self.match is not None:
             if key in self.match:
                 self.match[key]()
                 return True
         return False
-    
+
     def view(self):
         'View all meals'
         global DATA_INDEX
@@ -318,7 +338,7 @@ class DBViewer:
             self.print_func(self.page, DATA, DATA_INDEX, SELECTION_NAME)
 
             key = getch()
-            
+
             if self.run_match(key):
                 continue
 
@@ -335,7 +355,7 @@ class DBViewer:
                             self.index = 0
                         else:
                             self.index += 1
-                
+
             match key:
                 case b'n':
                     self.page += 1
@@ -348,4 +368,5 @@ class DBViewer:
                 case _:
                     pass
 if __name__ == '__main__':
-    plan('monday')
+    key = getch()
+    print(key)
