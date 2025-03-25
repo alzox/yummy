@@ -3,7 +3,7 @@ from .yummy_funcs import *
 from .yummy_utils import is_valid_weekday, recursive_listdir
 
 class Yummy(cmd.Cmd):
-    intro = '\nWelcome to the yummy food planning cli :)!\nType help or ? to list commands.\n'
+    intro = '\nWelcome to the yummy (meal planning) cli :)!\nType help or ? to list commands.\n'
     
     prompt = '(yummy) '
     file = None
@@ -68,9 +68,38 @@ class Yummy(cmd.Cmd):
             return both_extensions
     
         
-    def do_export(self, arg=None):
+    def do_export(self, arg):
         'Export the current plan:  EXPORT'
-        export_json()
+        #! there has to be a better way to do this
+        args = parse(arg)
+        
+        if len(args) == 2:
+            if args[0] not in ['grocery', 'plan']:
+                print('Invalid export option\n')
+                return
+            elif args[0] == 'grocery':
+                export_grocery(args[1])
+            elif args[0] == 'plan':
+                export_plans(args[1])
+             
+        if args[0] not in ['grocery', 'plan']:
+            print('Invalid export option\n')
+            return
+        elif args[0] == 'grocery':
+            export_grocery()
+        elif args[0] == 'plan':
+            export_plans() 
+       
+    def complete_export(self, text, line, begidx, endidx):
+        # [grocery|plan] [json|csv]
+        # if there is no space autocomplete the first word
+        
+        words = ["grocery", "plan", "json", "csv"]
+        
+        if text:
+            return [word for word in words if word.startswith(text)]
+        else:
+            return words 
         
     def do_exit(self, arg):
         'Exit the shell:  EXIT'

@@ -74,7 +74,23 @@ def show(weekday='all'):
         plan = db.find_plan_print(weekday_to_index(weekday))
         print_meals(weekday, plan)
     print('\n')
+   
+def db_summary():
+    'Show a summary of the database:  DB_SUMMARY'
+    meals, plans, groceries = db.summary()
+    print(f'Meals Table Summary: Rows: {meals}, Columns: 2')
+    print(f'Plans Table Summary: Rows: {plans}, Columns: 4')
+    print(f'Groceries Table Summary: Rows: {groceries}, Columns: 3')
     
+    meals_planned = 0
+    for plan in db.get_planner_meals():
+        for meal in plan[1:]:
+            if meal:
+                meals_planned += 1
+    
+    print(f'Meals Planned: {meals_planned}/21!\n')
+    
+ 
 def db_meals():
     'Show and edit the current meals:  DB_MEALS'
     actions = {
@@ -88,8 +104,7 @@ def db_meals():
 
     viewer = DBViewer(db, 'meals', match=actions)
     viewer.view()
-    
-    
+     
 def grocery():
     'View all meals and edit their groceries status:  GROCERY'
     grocery_actions = {
@@ -108,8 +123,11 @@ def grocery():
     }
     viewer = DBViewer(db, 'planner', match=actions)
     viewer.view()
-           
-def import_json(file):
+
+# --- IMPORT/EXPORT FUNCTIONS ---
+#! is there a way to auto gen schemas so there doesn't need to be duplicate code?
+
+def import_json(file): #* the file should be in the format: meals, plans
     'Import meals from JSON:  IMPORT_JSON file'
     data = json.load(open(file))
     
@@ -141,7 +159,7 @@ def import_json_url(url):
     
     print('Import complete\n')
     
-def export_json():
+def export_plans_json():
     'Export plans to JSON'
     print('Exporting plans to JSON')
 
@@ -154,8 +172,74 @@ def export_json():
     with open(JSON_PATH, 'w') as f:
         json.dump(json_dict, f)
     print('Plans exported to docs/plans.json\n')
+    
+def export_plans_csv():
+    'Export plans to CSV'
+    print('Exporting plans to CSV')
+
+    plans = db.export_plans()
+    with open('docs/plans.csv', 'w') as f:
+        for plan in plans:
+            f.write(f'{plan[0]},{plan[1]},{plan[2]},{plan[3]}\n')
+    print('Plans exported to docs/plans.csv\n')
+    
+def export_plans(extension='json'):
+    'Export plans to CSV or JSON:  EXPORT_PLANS [csv|json]'
+    if extension == 'csv':
+        export_plans_csv()
+    elif extension == 'json':
+        export_plans_json()
+    else:
+        print('Invalid extension\n')
+  
+def import_csv(file): #* the file should be in the format: meal_id, name, quantity
+    'Import groceries from CSV:  IMPORT_CSV file'
+    with open(file, 'r') as f:
+        lines = f.readlines()
+        for line in lines:
+            line = line.split(',')
+            db.insert_grocery(line[0], line[1], line[2])
+    print('Groceries imported from CSV\n')
+
+def import_csv_url(url):
+    'Import groceries from CSV:  IMPORT_CSV_URL url'
+    data = requests.get(url).text.split('\n')
+    for line in data:
+        line = line.split(',')
+        db.insert_grocery(line[0], line[1], line[2])
+    print('Groceries imported from CSV\n')
+    
+def export_grocery_csv():
+    'Export groceries to CSV'
+    print('Exporting groceries to CSV')
+    groceries = db.export_groceries()
+    with open(GROCERY_PATH, 'w') as f:
+        for grocery in groceries:
+            f.write(f'{grocery[0]},{grocery[1]},{grocery[2]}')
+    print('Groceries exported to docs/grocery.csv\n')
+    
+def export_grocery_json():
+    'Export groceries to JSON'
+    print('Exporting groceries to JSON')
+    groceries = db.export_groceries()
+    groceries_arr = [{'meal_id': grocery[0], 'name': grocery[1], 'quantity': grocery[2]} for grocery in groceries]
+    with open('docs/groceries.json', 'w') as f:
+        json.dump(groceries_arr, f)
+    print('Groceries exported to docs/groceries.json\n')
+    
+def export_grocery(extension='csv'):
+    'Export groceries to CSV or JSON:  EXPORT_GROCERY [csv|json]'
+    print(extension)
+    if extension == 'csv':
+        export_grocery_csv()
+    elif extension == 'json':
+        export_grocery_json()
+    else:
+        print('Invalid extension\n')
    
-""" Refactor These Soon, But They Are View Functions """ 
+ 
+# --- DBVIEWER CLASS -- 
+
 def meal_select():
     'Page through existing recipes'
     global DATA_INDEX

@@ -155,5 +155,20 @@ def export_plans():
     conn.close()
     return plans
 
+
+"""Summary Functions"""
+
+def summary():
+    conn = sqlite3.connect(file)
+    c = conn.cursor()
+    c.execute("SELECT * FROM Meals")
+    meals = c.fetchall()
+    c.execute("SELECT * FROM Plans")
+    plans = c.fetchall()
+    c.execute("SELECT * FROM Groceries")
+    groceries = c.fetchall()
+    conn.close()
+    return meals, plans, groceries
+
 if __name__ == "__main__":
     find_plan_print(1)
