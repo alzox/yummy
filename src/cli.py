@@ -55,8 +55,16 @@ class Yummy(cmd.Cmd):
         
     def do_import(self, arg=None):
         'Import into SQL from JSON:  IMPORT'
+        if len(arg) == 0:
+            print('No file specified\n')
+            return
+        if len(arg) > 1:
+            print('Too many arguments\n')
+            return
         if re.search('.json', arg):
             import_json(arg)
+        elif re.search('.csv', arg):
+            import_csv(arg)
         else:
             print('Invalid file type\n')
             return

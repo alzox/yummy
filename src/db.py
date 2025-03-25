@@ -1,7 +1,8 @@
 import sqlite3
 import os
 
-FILE = os.getcwd() + '/yummy.db'
+FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'yummy.db')
+#* This puts the yummy.db file in the root directory of the project
 
 """Clear Functions"""
 
@@ -158,6 +159,14 @@ def export_plans():
     conn.close()
     return plans
 
+def export_groceries():
+    conn = sqlite3.connect(FILE)
+    c = conn.cursor()
+    # Left Join to get the meal name for all meal ids
+    c.execute("SELECT Meals.meal_name, Groceries.grocery_name, Groceries.grocery_qty FROM Groceries LEFT JOIN Meals ON Groceries.meal_id = Meals.meal_id")
+    groceries = c.fetchall()
+    conn.close()
+    return groceries
 
 """Summary Functions"""
 

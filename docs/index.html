@@ -266,11 +266,11 @@
     fetch('grocery.csv')
     .then(response => response.text())
     .then(text => {
-        /* csv is in the form Ingredient,Quantity*/ 
+        /* csv is in the form Meal,Ingredient,Quantity*/ 
         let groceryList = text.split('\n');
         let groceryDiv = document.getElementById('grocery-list');
         /* for each grocery list, split by , */ 
-        groceryList.slice(0, -1).forEach(grocery => {
+        groceryList.forEach(grocery => {
             let groceryItem = grocery.split(',');
             groceryItem[1] = groceryItem[1].trim();
             let groceryRow = document.createElement('div');
@@ -280,7 +280,7 @@
             checkboxDiv.className = 'col-1';
             let checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
-            checkbox.id = groceryItem[0];
+            checkbox.id = groceryItem[1];
             checkbox.checked = localStorage.getItem(checkbox.id) === 'true';
 
             checkbox.addEventListener('change', () => {
@@ -291,7 +291,7 @@
 
             let groceryContent = document.createElement('div');
             groceryContent.className = 'col-11';
-            groceryContent.innerHTML = `<h4>${groceryItem[1]}x ${groceryItem[0]}</h4>`;
+            groceryContent.innerHTML = `<h4>${groceryItem[2]}x ${groceryItem[1]}</h4>`;
             groceryRow.appendChild(checkboxDiv);
             groceryRow.appendChild(groceryContent);
 

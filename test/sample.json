@@ -1,0 +1,24 @@
+{
+    "plans": [
+        {
+            "weekday": "Tuesday",
+            "breakfast": "Bread",
+            "lunch": "Panera",
+            "dinner": "Dumplings"
+        }
+    ],
+    "meals": [
+        {
+            "id": 1,
+            "name": "Bread"
+        },
+        {
+            "id": 2,
+            "name": "Panera"
+        },
+        {
+            "id": 3,
+            "name": "Dumplings"
+        }
+    ]
+    }

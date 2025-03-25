@@ -21,9 +21,7 @@ except ImportError:
 
 # --- PATHS ---
 
-JSON_PATH = os.getcwd() + '/docs/plans.json'
-GROCERY_PATH = os.getcwd() + '/docs/grocery.csv'
-
+DOCS_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'docs')
 
 # --- FUNCTIONS ---
 
@@ -69,7 +67,9 @@ def show(weekday='all'):
     'Show the current plan:  SHOW'
     print('\n')
     if weekday == 'all':
-        print_plan_all() #!STUBBED, print all plans in db
+        for day in WEEKDAYS_LOWER:
+            plan = db.find_plan_print(weekday_to_index(day))
+            print_meals(day, plan)
     else:
         plan = db.find_plan_print(weekday_to_index(weekday))
         print_meals(weekday, plan)
@@ -169,7 +169,7 @@ def export_plans_json():
     meals_arr = [{'id': meal[0], 'name': meal[1]} for meal in meals]
 
     json_dict = {"plans": plans_arr, "meals": meals_arr}
-    with open(JSON_PATH, 'w') as f:
+    with open(os.path.join(DOCS_PATH, 'plans.json'), 'w') as f:
         json.dump(json_dict, f)
     print('Plans exported to docs/plans.json\n')
     
@@ -178,7 +178,7 @@ def export_plans_csv():
     print('Exporting plans to CSV')
 
     plans = db.export_plans()
-    with open('docs/plans.csv', 'w') as f:
+    with open(os.path.join(DOCS_PATH, 'plans.csv'), 'w') as f:
         for plan in plans:
             f.write(f'{plan[0]},{plan[1]},{plan[2]},{plan[3]}\n')
     print('Plans exported to docs/plans.csv\n')
@@ -213,7 +213,7 @@ def export_grocery_csv():
     'Export groceries to CSV'
     print('Exporting groceries to CSV')
     groceries = db.export_groceries()
-    with open(GROCERY_PATH, 'w') as f:
+    with open(os.path.join(DOCS_PATH, 'grocery.csv'), 'w') as f:
         for grocery in groceries:
             f.write(f'{grocery[0]},{grocery[1]},{grocery[2]}')
     print('Groceries exported to docs/grocery.csv\n')
@@ -223,7 +223,7 @@ def export_grocery_json():
     print('Exporting groceries to JSON')
     groceries = db.export_groceries()
     groceries_arr = [{'meal_id': grocery[0], 'name': grocery[1], 'quantity': grocery[2]} for grocery in groceries]
-    with open('docs/groceries.json', 'w') as f:
+    with open(os.path.join(DOCS_PATH, 'grocery.json'), 'w') as f:
         json.dump(groceries_arr, f)
     print('Groceries exported to docs/groceries.json\n')
     

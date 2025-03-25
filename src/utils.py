@@ -77,10 +77,11 @@ def print_plan(plans = None, index = 0, weekday = None):
 def print_meals(weekday, meal_arr):
     print(f'{str.title(weekday)}\'s Plan')
     print('=' * 20)
-    print('Breakfast: ' + meal_arr[0])
-    print('Lunch: ' + meal_arr[1])
-    print('Dinner: ' + meal_arr[2])
+    print('Breakfast: ' + str(meal_arr[0]))
+    print('Lunch: ' + str(meal_arr[1]))
+    print('Dinner: ' + str(meal_arr[2]))
     print('=' * 20)
+    print('\n')
     
 def print_page_meals(page, data, index=None, *args):
     print(f'Page {page} of Meals')

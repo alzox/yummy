@@ -1,1 +1,64 @@
-{"plans": [{"weekday": "Monday", "breakfast": "Bread", "lunch": "Panera", "dinner": "Chips"}, {"weekday": "Tuesday", "breakfast": null, "lunch": null, "dinner": null}, {"weekday": "Wednesday", "breakfast": null, "lunch": null, "dinner": null}, {"weekday": "Thursday", "breakfast": null, "lunch": null, "dinner": null}, {"weekday": "Friday", "breakfast": null, "lunch": null, "dinner": null}, {"weekday": "Saturday", "breakfast": null, "lunch": null, "dinner": null}, {"weekday": "Sunday", "breakfast": null, "lunch": null, "dinner": null}], "meals": [{"id": 1, "name": "Meals"}, {"id": 2, "name": "More"}, {"id": 3, "name": "Meal"}, {"id": 4, "name": "Mealer"}, {"id": 5, "name": "Bread"}, {"id": 6, "name": "Panera"}, {"id": 7, "name": "Chips"}]}
+{
+    "plans": [
+        {
+            "weekday": "Monday",
+            "breakfast": "Bread",
+            "lunch": "Panera",
+            "dinner": "Dumplings"
+        },
+        {
+            "weekday": "Tuesday",
+            "breakfast": null,
+            "lunch": null,
+            "dinner": null
+        },
+        {
+            "weekday": "Wednesday",
+            "breakfast": null,
+            "lunch": null,
+            "dinner": null
+        },
+        {
+            "weekday": "Thursday",
+            "breakfast": null,
+            "lunch": null,
+            "dinner": null
+        },
+        {
+            "weekday": "Friday",
+            "breakfast": null,
+            "lunch": null,
+            "dinner": null
+        },
+        {
+            "weekday": "Saturday",
+            "breakfast": null,
+            "lunch": null,
+            "dinner": null
+        },
+        {
+            "weekday": "Sunday",
+            "breakfast": null,
+            "lunch": null,
+            "dinner": null
+        }
+    ],
+    "meals": [
+        {
+            "id": 1,
+            "name": "Bread"
+        },
+        {
+            "id": 2,
+            "name": "Panera"
+        },
+        {
+            "id": 3,
+            "name": "Dumplings"
+        },
+        {
+            "id": 4,
+            "name": "Ramen"
+        }
+    ]
+}
