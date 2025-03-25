@@ -27,6 +27,7 @@ DOCS_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file_
 
 def plan(weekday):
     'Plan a day:  PLAN day_of_week'
+    #! Refactor this to use a DBViewer
     index = 0
     while True:
         db_plan = db.find_plan_print(weekday_to_index(weekday))
@@ -75,23 +76,26 @@ def show(weekday='all'):
         print_meals(weekday, plan)
     print('\n')
    
-def db_summary():
+def summary():
     'Show a summary of the database:  DB_SUMMARY'
     meals, plans, groceries = db.summary()
-    print(f'Meals Table Summary: Rows: {meals}, Columns: 2')
-    print(f'Plans Table Summary: Rows: {plans}, Columns: 4')
-    print(f'Groceries Table Summary: Rows: {groceries}, Columns: 3')
+    print(f'Meals Table Summary: Rows: {len(meals)}, Columns: 2')
+    print(f'Plans Table Summary: Rows: {len(plans)}, Columns: 4')
+    print(f'Groceries Table Summary: Rows: {len(groceries)}, Columns: 3')
     
     meals_planned = 0
-    for plan in db.get_planner_meals():
-        for meal in plan[1:]:
-            if meal:
-                meals_planned += 1
-    
+    for plan in plans: 
+        if plan[2] is not None:
+            meals_planned += 1
+        if plan[3] is not None:
+            meals_planned += 1
+        if plan[4] is not None:
+            meals_planned += 1
+            
     print(f'Meals Planned: {meals_planned}/21!\n')
     
  
-def db_meals():
+def meals():
     'Show and edit the current meals:  DB_MEALS'
     actions = {
         b'\r': lambda: db.edit_meal(

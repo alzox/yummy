@@ -10,7 +10,7 @@ class Yummy(cmd.Cmd):
     file = None
     
     def do_plan(self, arg):
-        'Plan a day:  PLAN day_of_week'
+        'Plan the meals for a weekday: PLAN weekday'
         if not arg:
             print('No weekday specified\n')
             return
@@ -29,7 +29,7 @@ class Yummy(cmd.Cmd):
             return self.weekdays[:]
         
     def do_show(self, arg):
-        'Show the current plan:  SHOW'
+        'Show the planned meals for a weekday: SHOW weekday'
         if not arg:
             show()
             return
@@ -45,16 +45,16 @@ class Yummy(cmd.Cmd):
         else:
             return self.weekdays[:] + ["all"]
         
-    def do_db(self, arg):
-        'Show and manage the meals in the database:  DB'
-        db_meals()
+    def do_meals(self, arg):
+        'View and edit the database of meals: MEALS'
+        meals()
                 
     def do_grocery(self, arg):
-        'Plan the whole grocery-list:  GROCERY item'
+        'View and edit the grocery list for planned meals: GROCERY'
         grocery(*parse(arg))
         
     def do_import(self, arg=None):
-        'Import into SQL from JSON:  IMPORT'
+        'Import a meal plan or grocery list into sqlite: IMPORT file'
         if len(arg) == 0:
             print('No file specified\n')
             return
@@ -76,9 +76,8 @@ class Yummy(cmd.Cmd):
         else:
             return both_extensions
     
-        
     def do_export(self, arg):
-        'Export the current plan:  EXPORT'
+        'Export the meal plan or grocery list to a file: EXPORT [grocery|plan] [json|csv]'
         #! there has to be a better way to do this
         args = parse(arg)
         
@@ -100,19 +99,19 @@ class Yummy(cmd.Cmd):
             export_plans() 
        
     def complete_export(self, text, line, begidx, endidx):
-        # [grocery|plan] [json|csv]
-        # if there is no space autocomplete the first word
-        
         words = ["grocery", "plan", "json", "csv"]
-        
         if text:
             return [word for word in words if word.startswith(text)]
         else:
             return words 
         
+    def do_summary(self, arg):
+        'View a summary of the database: SUMMARY'
+        summary()
+        
     def do_exit(self, arg):
-        'Exit the shell:  EXIT'
-        print('Thank you for using the food planner\n')
+        'Exit the shell: EXIT'
+        print('Thank you for using the meal planner\n')
         return True
 
 def parse(arg):

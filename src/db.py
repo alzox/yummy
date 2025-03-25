@@ -4,7 +4,7 @@ import os
 FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'yummy.db')
 #* This puts the yummy.db file in the root directory of the project
 
-"""Clear Functions"""
+# --- CLEAR FUNCTIONS TABLES ---
 
 def clear_plans():
     conn = sqlite3.connect(FILE)
@@ -19,8 +19,8 @@ def clear_meals():
     c.execute("DELETE FROM Meals")
     conn.commit()
     conn.close()
-    
-"""Insert Functions"""
+   
+# --- INSERT FUNCTIONS --- 
     
 def edit_plan(weekday_id, meal_str, meal_id):
     conn = sqlite3.connect(FILE)
@@ -49,7 +49,6 @@ def insert_meal(meal):
     finally:
         conn.close()
         
-        
 def edit_meal(meal_id, meal):
     conn = sqlite3.connect(FILE)
     c = conn.cursor()
@@ -71,7 +70,7 @@ def edit_grocery(grocery_id, grocery, quantity):
     conn.commit()
     conn.close()
     
-"""Delete Functions"""
+# --- DELETE FUNCTIONS ---
 
 def delete_meal(meal_id):
     conn = sqlite3.connect(FILE)
@@ -87,7 +86,7 @@ def delete_grocery(grocery_id):
     conn.commit()
     conn.close()
     
-"""Find Functions"""   
+# --- SELECT FUNCTIONS ---
 
 FIRST_ELEMENT = 0
 
@@ -148,7 +147,7 @@ def find_plan_print(weekday_id):
     conn.close()
     return plan
 
-"""Aggregate Functions"""
+# --- EXPORT FUNCTIONS ---
 
 def export_plans():
     conn = sqlite3.connect(FILE)
@@ -168,7 +167,7 @@ def export_groceries():
     conn.close()
     return groceries
 
-"""Summary Functions"""
+# --- SUMMARY FUNCTIONS ---
 
 def summary():
     conn = sqlite3.connect(FILE)
