@@ -1,4 +1,4 @@
-from src import FPShell
+from src import Yummy
 
 if __name__ == "__main__":
-    FPShell().cmdloop()
+    Yummy().cmdloop()

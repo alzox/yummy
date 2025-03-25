@@ -1,1 +1,1 @@
-from .fp_shell import FPShell
+from .yummy_cli import Yummy
