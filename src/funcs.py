@@ -171,7 +171,8 @@ def import_json(file): #* the file should be in the format: meals, plans
 
 def import_json_url(url):
     'Import meals from JSON:  IMPORT_JSON_URL url'
-    data = requests.get(url).json()
+    data = requests.get(url)
+    data = data.json()
 
     if 'meals' not in data or 'plans' not in data:
         print('Invalid JSON format\n')
@@ -368,5 +369,4 @@ class DBViewer:
                 case _:
                     pass
 if __name__ == '__main__':
-    key = getch()
-    print(key)
+    import_json_url('https://github.com/alzox/yummy/blob/master/docs/plans.json')

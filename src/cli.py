@@ -62,13 +62,17 @@ class Yummy(cmd.Cmd):
         if len(args) > 1:
             print('Too many arguments\n')
             return
-        if re.search('.json', arg):
-            import_json(arg)
-        elif re.search('.csv', arg):
-            import_csv(arg)
+        if re.search('http', arg):
+            if re.search('.json', arg):
+                import_json_url(args[0])
+            if re.search('.csv', arg):
+                import_csv_url(args[0])
         else:
-            print('Invalid file type\n')
-            return
+            if re.search('.json', arg):
+                import_json(args[0])
+            if re.search('.csv', arg):
+                import_csv(args[0])
+        return
     
     def complete_import(self, text, line, begidx, endidx):
         both_extensions = recursive_listdir(".json") 

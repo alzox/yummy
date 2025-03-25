@@ -31,6 +31,13 @@ python3 yummy.py
 - Add os.cwd() to PATH if you want to run it from anywhere
 - Open/Install liveserver to see planner site after exports
 
+```bash
+(yummy) import https://raw.githubusercontent.com/alzox/yummy/refs/heads/master/docs/plans.json  
+(yummy) import https://raw.githubusercontent.com/alzox/yummy/refs/heads/master/docs/grocery.csv 
+```
+
+- Import above if you want something to get started with or clone as template to save "locally"
+
 ## Personal To-dos
 
 - Make it work on linux
