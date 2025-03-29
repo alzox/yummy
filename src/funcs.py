@@ -29,7 +29,7 @@ try:
         MEALS, WEEKDAYS_LOWER,
         pressed_up_arrow, pressed_down_arrow,
         clear_terminal, weekday_to_index, index_page,
-        print_plan, print_meals, print_page_meals)
+        print_plan, print_meals, print_page_meals, print_page_select_groceries)
 except ImportError:
     import db
     from utils import (
@@ -347,16 +347,10 @@ class DBViewer:
                 case b'\xe0':
                     key = getch()
                     if pressed_up_arrow(key):
-                        if self.index == 0:
-                            self.index = min(4, (len(DATA)%5)-1)
-                        else:
-                            self.index -= 1
+                        self.index = (self.index - 1) % min(5, len(DATA))
                     elif pressed_down_arrow(key):
-                        if self.index == 4 or self.index == (len(DATA)%5)-1:
-                            self.index = 0
-                        else:
-                            self.index += 1
-
+                        self.index = (self.index + 1) % min(5, len(DATA)) 
+    
             match key:
                 case b'n':
                     self.page += 1
@@ -369,4 +363,4 @@ class DBViewer:
                 case _:
                     pass
 if __name__ == '__main__':
-    import_json_url('https://github.com/alzox/yummy/blob/master/docs/plans.json')
+    plan('monday')

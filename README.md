@@ -41,3 +41,6 @@ python3 yummy.py
 ## Personal To-dos
 
 - Make it work on linux
+- Revamp index.html
+- Fix select page prints (carefully)
+- Rethink meals index logic
