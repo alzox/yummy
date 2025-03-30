@@ -93,7 +93,7 @@ def print_page_meals(page, data, index=None, *args):
             print(f'{i}: {data[i][1]}')
     print('=' * 20)
     print('(n: next page | p: previous page | q: quit)')
-    print('(enter: edit | d: delete | a: add)\n')
+    print('(enter: edit  | d: delete | a: add)\n')
     
 def print_page_groceries(page, data, index=None, MEALID=None):
     print(f'Groceries for {MEALID}')
@@ -105,16 +105,16 @@ def print_page_groceries(page, data, index=None, MEALID=None):
             print(f'{data[i][2]}x {data[i][1]}')
     print('=' * 20)
     print('(n: next page | p: previous page | q: quit)')
-    print('(enter: edit | d: delete | a: add)\n')
+    print('(enter: edit  | d: delete | a: add)\n')
 
 def print_page_select(page, data, index=None, *args):
     print(f'Page {page} of Meals')
     print('=' * 20)
     for i in range(page * 5, min((page + 1) * 5, len(data))):
         if i == index:
-            print(f'\033[1m{i}: {data[i][0]} <\033[0m')
+            print(f'\033[1m{i}: {data[i][1]} <\033[0m')
         else:
-            print(f'{i}: {data[i][0]}')
+            print(f'{i}: {data[i][1]}')
     print('=' * 20)
     print('(n: next page | p: previous page | q: quit)')
     print('(enter: select meal)\n')
@@ -129,4 +129,4 @@ def print_page_select_groceries(page, data, index=None, *args):
             print(f'{i}: {data[i][1]}')
     print('=' * 20)
     print('(n: next page | p: previous page | q: quit)')
-    print('(enter: select meal to edit groceries)\n')
+    print('(enter: select item to plan grocieries for)\n')

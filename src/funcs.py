@@ -29,14 +29,14 @@ try:
         MEALS, WEEKDAYS_LOWER,
         pressed_up_arrow, pressed_down_arrow,
         clear_terminal, weekday_to_index, index_page,
-        print_plan, print_meals, print_page_meals, print_page_select_groceries)
+        print_plan, print_page_select, print_meals, print_page_meals, print_page_groceries, print_page_select_groceries)
 except ImportError:
     import db
     from utils import (
         MEALS, WEEKDAYS_LOWER,
         pressed_up_arrow, pressed_down_arrow,
         clear_terminal, weekday_to_index, index_page,
-        print_plan, print_meals, print_page_meals, print_page_select_groceries)
+        print_plan, print_page_select, print_meals, print_page_meals, print_page_groceries, print_page_select_groceries)
 
 # --- PATHS ---
 
@@ -141,9 +141,9 @@ def grocery():
     }
 
     actions = {
-        b'\r': lambda: (DBViewer(db, 'grocery', match=grocery_actions, print_func=print_page_select_groceries).view())
+        b'\r': lambda: (DBViewer(db, 'grocery', match=grocery_actions, print_func=print_page_groceries).view())
     }
-    viewer = DBViewer(db, 'planner', match=actions)
+    viewer = DBViewer(db, 'planner', match=actions, print_func=print_page_select_groceries)
     viewer.view()
 
 # --- IMPORT/EXPORT FUNCTIONS ---
@@ -279,7 +279,7 @@ def meal_select():
     global DATA
     # case b'\r':
     #             return data[int(digit_buffer)][1]
-    viewer = DBViewer(db, 'meals')
+    viewer = DBViewer(db, 'meals', print_func=print_page_select)
     viewer.view()
     return DATA[DATA_INDEX][1]
 
@@ -363,4 +363,4 @@ class DBViewer:
                 case _:
                     pass
 if __name__ == '__main__':
-    plan('monday')
+    meal_select()
