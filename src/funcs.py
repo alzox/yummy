@@ -334,6 +334,8 @@ class DBViewer:
                 self.page = 0
             self.set_data()
             DATA_INDEX = index_page(self.page, self.index)
+            MAX_PAGES = len(DATA) // 5
+            MODULO = len(DATA) % 5 if self.page == MAX_PAGES else 5
 
             clear_terminal()
             self.print_func(self.page, DATA, DATA_INDEX, SELECTION_NAME)
@@ -347,9 +349,13 @@ class DBViewer:
                 case b'\xe0':
                     key = getch()
                     if pressed_up_arrow(key):
-                        self.index = (self.index - 1) % min(5, len(DATA))
+                        self.index = (self.index - 1) % min(5, MODULO)
+                        print(MODULO)
+                        print(MAX_PAGES)
+                        import time
+                        time.sleep(5)
                     elif pressed_down_arrow(key):
-                        self.index = (self.index + 1) % min(5, len(DATA)) 
+                        self.index = (self.index + 1) % min(5, MODULO)
     
             match key:
                 case b'n':
