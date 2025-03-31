@@ -42,4 +42,4 @@ python3 yummy.py
 
 - Make it work on linux
 - Revamp index.html
-- Rethink meals index logic
+- Export groceries by times meal shows up in planner
